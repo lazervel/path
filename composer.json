@@ -1,5 +1,5 @@
 {
-  "name": "fsmaker/path",
+  "name": "filesys/path",
   "description": "Help with handling or manipulating file and directory path",
   "type": "library",
   "license": "MIT",
