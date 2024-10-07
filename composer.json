@@ -1,0 +1,32 @@
+{
+  "name": "fsmaker/path",
+  "description": "Help with handling or manipulating file and directory path",
+  "type": "library",
+  "license": "MIT",
+  "keywords": ["path", "filesystem", "fs"],
+  "autoload": {
+    "psr-4": {
+      "Path\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Shahzada Modassir",
+      "email": "codingmodassir@gmail.com",
+      "homepage": "https://github.com/shahzadamodassir"
+    },
+    {
+      "name": "Shahzadi Afsara",
+      "email": "shahzadiafsara@gmail.com",
+      "homepage": "https://github.com/javercel"
+    }
+  ],
+  "funding": [
+    {
+      "type": "Github",
+      "url": "https://github.com/shahzadamodassir"
+    }
+  ],
+  "minimum-stability": "beta",
+  "require": {}
+}
