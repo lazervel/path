@@ -33,7 +33,7 @@ class Path extends PathBuilder
    */
   public static function toNamespcedPath(string $path) : string
   {
-
+    return self::namespaceWith(self::normalize($path));
   }
 
   /**
@@ -44,7 +44,7 @@ class Path extends PathBuilder
    */
   public static function join(string ...$paths) : string
   {
-    
+    return self::normalize(\join(self::BSEP, $paths));
   }
 
   /**
@@ -148,9 +148,9 @@ class Path extends PathBuilder
    * @param string $path [required]
    * @return array format LIKE (root, dir, base, ext, name)
    */
-  public static function format(array $path) : string
+  public static function format( $path) : string
   {
-
+    
   }
 
   /**
