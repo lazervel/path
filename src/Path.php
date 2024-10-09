@@ -148,9 +148,21 @@ class Path extends PathBuilder
    * @param string $path [required]
    * @return array format LIKE (root, dir, base, ext, name)
    */
-  public static function format( $path) : string
+  public static function format(array $pathObject) : string
   {
-    
+    $format = [];
+
+    try {
+      // Handle: basename or filename and extention
+      \array_unshift($format, $pathObject['base'] ??
+        $pathObject['name'].$pathObject['ext']
+      );
+
+      // Handle: insert dirname and rootname to 1st
+      \array_unshift($format, $pathObject['dir'] ?? $pathObject['root']);
+    } catch(Exception $e) {}
+
+    return self::separate($format);
   }
 
   /**
@@ -189,7 +201,7 @@ class Path extends PathBuilder
    * 
    * @return string relative-path
    */
-  public static function relative(string $path) : string
+  public static function relative(string $from, string $to) : string
   {
 
   }
