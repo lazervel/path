@@ -1,6 +1,6 @@
 {
   "name": "filesys/path",
-  "description": "Help with handling or manipulating file and directory path",
+  "description": "Help with handling or manipulating file and directory path.",
   "type": "library",
   "license": "MIT",
   "keywords": ["path", "filesystem", "fs"],
