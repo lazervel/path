@@ -203,7 +203,38 @@ class Path extends PathBuilder
    */
   public static function relative(string $from, string $to) : string
   {
+    // Create arrayable paths after resolving {from} and {to} path.
+    $from = \explode(self::BSEP, self::resolve($from));
+    $to   = \explode(self::BSEP, self::resolve($to));
+    
+    /**
+     * $matchesLength matches the common base path to increase count
+     * 
+     * @var int $matchesLength
+     */
+    $matchesLength = 0;
 
+    // Go through the array, to matches the common path
+    foreach($from as $index => $part) {
+      if (isset($to[$index]) && $to[$index] === $part) {
+        $matchesLength++;
+      } else {
+        break; // Stop Immediately loop
+      }
+    }
+    
+    // Calculate how many directories to go up from $from
+    $upDirs = \count($from) - $matchesLength;
+    $parents = \str_repeat('..\\', $upDirs);
+
+    $relative = self::separate(\array_slice($to, $matchesLength));
+
+    // Handle: If not drive exists in $relative path then attach $parents
+    if (!self::getDrive([$relative])) {
+      $relative = $parents.$relative;
+    }
+    
+    return $relative;
   }
 
   /**
@@ -307,8 +338,9 @@ class Path extends PathBuilder
    */
   public static function resolve(string ...$paths) : string
   {
+    \array_unshift($paths, self::active(true));
     return self::rTrimSep(
-      self::normalize(self::getCompleteSource($paths, self::active(true), [self::class, 'separate']))
+      self::normalize(self::getCompleteSource(\array_map([self::class, 'separate'], $paths)))
     );
   }
 }

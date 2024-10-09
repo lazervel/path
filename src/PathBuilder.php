@@ -43,33 +43,18 @@ abstract class PathBuilder
    * 
    * 
    * @param array $paths
-   * @param string $extra
-   * @param 
-   * 
    * @return array
    */
-  protected static function getCompleteSource(array $paths, string $extra, $separate)
+  protected static function getCompleteSource(array $paths)
   {
-    // Handle: If given $extra value then unshift extra value
-    if ($extra) {
-      \array_unshift($paths, $extra);
-    }
-
-    // Replace forward / backward \\ slash to single backward \\ slash all value
-    $paths = \array_map($separate, $paths);
-
-    /** @var string */
+    /** @var string $root Getting a root directory */
+    /** @var int $i for Reverse loop */
+    /** @var array $path Store final modified path */
     $root = self::getDrive($paths);
-
-    /** @var array */
-    $source = [];
-
-    /** @var int */
     $i = \count($paths) - 1;
-
-    /** @var array */
     $newPaths = [];
 
+    // Go through the array, Adding each of the items to their new values
     for(; $i >= 0; $i--) {
       $path = $paths[$i];
 
@@ -92,7 +77,7 @@ abstract class PathBuilder
     }
 
     \array_unshift($newPaths, $root);
-    return $separate($newPaths);
+    return \join(self::BSEP, $newPaths);
   }
 
   /**
@@ -112,14 +97,14 @@ abstract class PathBuilder
     $normalized = [];
     $tmpParents = [];
     $endPart = end($fDirs);
-    function hasContains(array $array) {
+    $hasContains = function(array $array) {
       foreach($array as $data) {
         if (!!$data) {
           return true;
         }
       }
       return false;
-    }
+    };
 
     foreach($fDirs as $fDir) {
       if ($hasParent = \preg_match(self::PARENT_DIR, $fDir)) {
@@ -133,7 +118,7 @@ abstract class PathBuilder
     if ($root) {
       \array_unshift($normalized, $root);
     } else {
-      \count($tmpParents) > 0 ? \array_unshift($normalized, ...$tmpParents) : !hasContains($normalized) && !$endPart && \array_unshift($normalized, '.', $endPart);
+      \count($tmpParents) > 0 ? \array_unshift($normalized, ...$tmpParents) : !$hasContains($normalized) && !$endPart && \array_unshift($normalized, '.', $endPart);
     }
 
     return $separate($normalized);
@@ -175,7 +160,7 @@ abstract class PathBuilder
    * @param array $path
    * @return string|false
    */
-  private static function getDrive(array $paths)
+  protected static function getDrive(array $paths)
   {
     /** @var bool|string */
     $output = false;
@@ -197,7 +182,7 @@ abstract class PathBuilder
    * 
    * @return bool
    */
-  private static function matchDrive(string $target, string $matcher) : bool
+  protected static function matchDrive(string $target, string $matcher) : bool
   {
     $abspath = self::getDrive([$matcher]);
     $drive   = self::getDrive([$target]);
