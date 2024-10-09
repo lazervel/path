@@ -6,11 +6,8 @@ namespace Path;
 
 use Path\PathBuilder;
 
-class Path
+class Path extends PathBuilder
 {
-  public const BSEP = PathBuilder::BSEP;
-  public const FSEP = PathBuilder::FSEP;
-
   /**
    * Returns a accurrate pathname, exclude with rootname Its used to extract [local] pathname.
    * But not reducing '..' and '.' parts they're not replaced by a single one; when the path
@@ -21,7 +18,8 @@ class Path
    */
   public static function pathname(string $path) : string
   {
-    return PathBuilder::pathname($path);
+    $path = self::separate($path);
+    return \mb_substr($path, \mb_strlen(self::rootname($path)));
   }
 
   /**
@@ -46,7 +44,70 @@ class Path
    */
   public static function join(string ...$paths) : string
   {
-    return self::normalize(self::separate($paths));
+    
+  }
+
+  /**
+   * 
+   * 
+   * @param string $path
+   * @return string
+   */
+  public static function rTrimSep(string $path) : string
+  {
+    return !!self::pathname($path) ? \preg_replace(self::RTRIM_SEP, '$1', $path) : $path;
+  }
+
+  /**
+   * Returns the real filtered-paths sources to make direct usable path
+   * 
+   * @param array|string $paths [required]
+   * @return string|bool
+   */
+  public static function real($paths) : array
+  {
+    $paths = (array) $paths;
+    
+    foreach($paths as $i=>$path) {
+      if (!\realpath($path)) unset($paths[$i]);
+    }
+
+    return $paths;
+  }
+
+   /**
+   * Returns active directory current working directory, root directory
+   * If pass $isCur true then returns active current working directory
+   * Otherwise returns active root directory
+   * 
+   * @param bool $isCur [optional]
+   * @return string
+   */
+  public static function active(bool $isCur = false)
+  {
+    return $isCur ? \getcwd() : $_SERVER['DOCUMENT_ROOT'];
+  }
+
+  /**
+   * Returns the full paths to the trimmed separators of the last last index of files, and join with paths
+   * separators and names combination to make a real files formate
+   * 
+   * @param string[] $paths [required]
+   * @param string[] $names [required]
+   * 
+   * @return string[]
+   */
+  public static function filePaths($paths, $names)
+  {
+    $files = [];
+
+    foreach($paths as $path) {
+      foreach($names as $name) {
+        $files[] = \rtrim($path, self::BSEP).self::FSEP.$name;
+      }
+    }
+
+    return $files;
   }
 
   /**
@@ -63,7 +124,7 @@ class Path
    */
   public static function dirname(string $path, int $levels = 1, string $suffix = '') : string
   {
-    return PathBuilder::suffix(\dirname($path, $levels), $suffix);
+    return self::suffix(\dirname($path, $levels), $suffix);
   }
 
   /**
@@ -76,20 +137,7 @@ class Path
    */
   public static function clean(string $path, ?string $sep=null) : string
   {
-    return PathBuilder::clean($path, $sep);
-  }
-
-  /**
-   * Normalize a string path, reducing '..' and '.' parts. When multiple slashes are found,
-   * they're replaced by a single one; when the path contains a trailing slash,
-   * it is preserved. On Windows backslashes are used.
-   * 
-   * @param string $path [required]
-   * @return string normalized path
-   */
-  public static function normalize(string $path) : string
-  {
-    return PathBuilder::normalize(self::separate($path));
+    return self::refresh($path, $sep ?? self::BSEP);
   }
 
   /**
@@ -106,6 +154,21 @@ class Path
   }
 
   /**
+   * Normalize a string path, reducing '..' and '.' parts. When multiple slashes are found,
+   * they're replaced by a single one; when the path contains a trailing slash,
+   * it is preserved. On Windows backslashes are used.
+   * 
+   * @param string $path [required]
+   * @return string normalized path
+   */
+  public static function normalize(string $path) : string
+  {
+    return self::normalized(
+      self::rootname($path), self::pathname($path), [self::class, 'separate']
+    );
+  }
+
+  /**
    * Returns extname method a path extension name from given path, Its used to get file ext
    * 
    * @param string $path [required]
@@ -113,7 +176,7 @@ class Path
    */
   public static function extname(string $path) : string
   {
-    return PathBuilder::fileExt(self::basename($path), 2);
+    return self::fileExt(self::basename($path));
   }
 
   /**
@@ -140,7 +203,8 @@ class Path
    */
   public static function rootname(string $path) : string
   {
-    return PathBuilder::rootname($path);
+    \preg_match(self::ROOT, $path, $matched);
+    return $matched[0];
   }
 
   /**
@@ -153,7 +217,8 @@ class Path
    */
   public static function isAbsolute(string $path) : bool
   {
-
+    $matched = self::rootname($path);
+    return !!$matched && !\str_ends_with($matched, ':');
   }
 
   /**
@@ -164,7 +229,7 @@ class Path
    */
   public static function filename(string $path) : string
   {
-    return PathBuilder::fileExt(self::basename($path), 1);
+    return self::fileExt(self::basename($path));
   }
 
   /**
@@ -198,7 +263,8 @@ class Path
    */
   public static function separate($paths, string $sep=self::BSEP) : string
   {
-    return PathBuilder::separate($paths, $sep);
+    $path = self::clean(\join($sep, (array) $paths));
+    return \str_replace([self::BSEP, self::FSEP], $sep, $path);
   }
 
   /**
@@ -224,12 +290,14 @@ class Path
    * the current working directory is used as well. The resulting path is normalized, and trailing
    * slashes are removed unless the path gets resolved to the root directory.
    * 
-   * @param string ...$paths [required]
+   * @param string $paths [required]
    * @return string resolved-path
    */
   public static function resolve(string ...$paths) : string
   {
-    return self::normalize(PathBuilder::getCompleteSource($paths, self::pathname(\getcwd())));
+    return self::rTrimSep(
+      self::normalize(self::getCompleteSource($paths, self::active(true), [self::class, 'separate']))
+    );
   }
 }
 ?>
