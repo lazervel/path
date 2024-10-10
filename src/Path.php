@@ -322,7 +322,7 @@ class Path extends PathBuilder
    */
   public static function basename(string $path, string $suffix = '') : string
   {
-    return \file_exists('basename') ? \basename($path, $suffix) : \pathinfo($path)['basename'];
+    return \is_callable('basename') ? \basename($path, $suffix) : \pathinfo($path)['basename'];
   }
 
   /**
