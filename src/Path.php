@@ -48,7 +48,7 @@ class Path extends PathBuilder
   }
 
   /**
-   * 
+   * Trim all right side directory separators, Its used to resolve path.
    * 
    * @param string $path
    * @return string
