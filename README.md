@@ -12,6 +12,16 @@ Help with handling or manipulating file and directory path.
 <a href="https://github.com/lazervel/path/releases"><img src="https://img.shields.io/github/release/lazervel/path.svg?style=flat-square" alt="Latest Version"></img></a>
 </p>
 
-# Installation
+## Installation
 
-# Documentation
+Installation is super-easy via [Composer](https://getcomposer.org)
+
+```bash
+composer require filesys/path
+```
+
+or add it by hand to your `composer.json` file.
+
+## Documentation
+
+Feel free to customize it with specific details relevant to your documentation! click [Documentation](https://github.com/lazervel/path/wiki)
