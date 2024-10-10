@@ -51,4 +51,4 @@ or add it by hand to your `composer.json` file.
 
 ## Documentation
 
-Feel free to customize it with specific details relevant to your documentation click [Documentation](https://github.com/lazervel/path/wiki)
+Feel free to customize it with specific details relevant to your documentation! click [Documentation](https://github.com/lazervel/path/wiki)
