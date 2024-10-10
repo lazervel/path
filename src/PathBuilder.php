@@ -153,12 +153,7 @@ abstract class PathBuilder
       return $matched[1] ? '\\UNC\\' : $matched[3] ?? $matched[2];
     }, $path);
   }
-
-  protected static function fileExt()
-  {
-
-  }
-
+  
   /**
    * Returns only matches path drive Otherwise return false, It used to gets drive
    * 
