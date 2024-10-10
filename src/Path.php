@@ -188,7 +188,7 @@ class Path extends PathBuilder
    */
   public static function extname(string $path) : string
   {
-    return self::fileExt(self::basename($path));
+    return \pathinfo($path)['extension'];
   }
 
   /**
@@ -272,7 +272,7 @@ class Path extends PathBuilder
    */
   public static function filename(string $path) : string
   {
-    return self::fileExt(self::basename($path));
+    return \pathinfo($path)['filename'];
   }
 
   /**
