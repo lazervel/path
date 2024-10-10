@@ -20,6 +20,33 @@ Installation is super-easy via [Composer](https://getcomposer.org)
 composer require filesys/path
 ```
 
+## Features
+
+- separate
+- refresh
+- basename
+- dirname
+- extname
+- rootname
+- filename
+- pathname
+- format
+- parse
+- rTrimSep
+- isAbsolute
+- clean
+- join
+- real
+- BSEP
+- FSEP
+- sep
+- delimiter
+- normalize
+- relative
+- resolve
+- filePaths
+- toNamespacedPath
+
 or add it by hand to your `composer.json` file.
 
 ## Documentation
