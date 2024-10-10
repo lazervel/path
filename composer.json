@@ -27,6 +27,6 @@
       "url": "https://github.com/shahzadamodassir"
     }
   ],
-  "minimum-stability": "stable",
+  "minimum-stability": "alpha",
   "require": {}
 }
