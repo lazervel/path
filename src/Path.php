@@ -48,7 +48,7 @@ class Path extends PathBuilder
   }
 
   /**
-   * 
+   * Trim all right side directory separators, Its used to resolve path.
    * 
    * @param string $path
    * @return string
@@ -188,7 +188,7 @@ class Path extends PathBuilder
    */
   public static function extname(string $path) : string
   {
-    return self::fileExt(self::basename($path));
+    return \pathinfo($path)['extension'];
   }
 
   /**
@@ -272,7 +272,7 @@ class Path extends PathBuilder
    */
   public static function filename(string $path) : string
   {
-    return self::fileExt(self::basename($path));
+    return \pathinfo($path)['filename'];
   }
 
   /**
@@ -322,7 +322,7 @@ class Path extends PathBuilder
    */
   public static function basename(string $path, string $suffix = '') : string
   {
-    return \file_exists('basename') ? \basename($path, $suffix) : \pathinfo($path)['basename'];
+    return \is_callable('basename') ? \basename($path, $suffix) : \pathinfo($path)['basename'];
   }
 
   /**

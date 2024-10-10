@@ -28,19 +28,22 @@ abstract class PathBuilder
   private const PARENT_DIR = '/^(?:\.\.)$/';
 
   /**
+   * Right side directory separator timmer regular expression
    * 
    * @var string
    */
   protected const RTRIM_SEP = '/([^\\\\\/]+)(\\\\|\/)+$/';
 
   /**
+   * Drive and multi directory separator matcher Regular Expression
    * 
    * @var string
    */
   private const MULTI_SEP = '/(?:^(\\\\|\/)(\1)(?=[^\\\\\/]+[\\\\\/]+[^\\\\\/]+[\\\\\/]?)|([\/\\\\])[\/\\\\]*)/';
 
   /**
-   * 
+   * Returns a complete array-source to ready to normalize path string, It's used to resolve path string
+   * Handle drives, trailing slashes and creating array-range
    * 
    * @param array $paths
    * @return array
@@ -62,7 +65,6 @@ abstract class PathBuilder
         if (self::getDrive([$path])) {
           $path = \mb_substr($path, \mb_strlen($root));
         }
-      
       // Otherwise skip the unmatched drive path
       } else {
         continue;
@@ -139,6 +141,8 @@ abstract class PathBuilder
   }
 
   /**
+   * Add namespace identifier '\\\\?' and includes '\UNC\' of specific drive
+   * And normalizing the path string.
    * 
    * @param string $path
    * @return string
@@ -149,20 +153,16 @@ abstract class PathBuilder
       return $matched[1] ? '\\UNC\\' : $matched[3] ?? $matched[2];
     }, $path);
   }
-
-  protected static function fileExt()
-  {
-
-  }
-
+  
   /**
+   * Returns only matches path drive Otherwise return false, It used to gets drive
    * 
    * @param array $path
    * @return string|false
    */
   protected static function getDrive(array $paths)
   {
-    /** @var bool|string */
+    /** @var bool|string Path drive */
     $output = false;
     foreach($paths as $path) {
       \preg_match(self::ROOT, $path, $matches);
@@ -176,6 +176,7 @@ abstract class PathBuilder
   }
 
   /**
+   * There matches the same drive or relative path, Its used to making resolved array-source
    * 
    * @param string $target
    * @param string $matcher
