@@ -65,7 +65,7 @@ abstract class PathBuilder
    * @param array $path
    * @return string|false
    */
-  private static function getDrive(array $paths)
+  protected static function getDrive(array $paths)
   {
     /** @var bool|string Path drive */
     $output = false;
@@ -101,9 +101,7 @@ abstract class PathBuilder
      * @return void|true
      */
     $isStopped = function($root, $path, &$resolved) {
-      if (($path && $path[0] === self::BSEP) ||
-        (self::isNetwork($root))) {
-        self::prepend($resolved, \substr($path, \strlen($root)));
+      if (($path && $path[0] === self::BSEP)) {
         return true;
       }
     };
@@ -131,6 +129,8 @@ abstract class PathBuilder
         if (self::getDrive([$path])) {
           $path = \substr($path, \strlen($root));
         }
+      } else if (self::isNetwork($root)) {
+        $path = self::BSEP.\substr($path, \strlen($root));
       } else {
         continue;
       }
