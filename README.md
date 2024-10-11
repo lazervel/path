@@ -20,6 +20,8 @@ Installation is super-easy via [Composer](https://getcomposer.org)
 composer require filesys/path
 ```
 
+or add it by hand to your `composer.json` file.
+
 ## Features
 
 - separate
@@ -46,8 +48,6 @@ composer require filesys/path
 - resolve
 - filePaths
 - toNamespacedPath
-
-or add it by hand to your `composer.json` file.
 
 ## Documentation
 
