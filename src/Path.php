@@ -27,6 +27,18 @@ class Path extends PathBuilder
     return $files;
   }
 
+  public static function lastDir(string $path) : string
+  {
+    $dir  = self::normalize(self::dirname($path));
+    $dirs = \explode(self::BSEP, $dir);
+    return @end($dirs);
+  }
+
+  public static function isLocal(string $path) : bool
+  {
+    return \stream_is_local($path) || 0 === \strpos($path, 'file:///');
+  }
+
   public static function format(array $pathObject) : string
   {
     $format = [];
