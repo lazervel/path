@@ -2,31 +2,35 @@
   "name": "filesys/path",
   "description": "Help with handling or manipulating file and directory path.",
   "type": "library",
+  "keywords": ["path", "filesys", "fs", "filesystem"],
   "license": "MIT",
-  "keywords": ["path", "filesystem", "fs"],
   "autoload": {
     "psr-4": {
       "Path\\": "src/"
     }
   },
+  "require": {},
+  "require-dev": {},
   "authors": [
     {
       "name": "Shahzada Modassir",
-      "email": "codingmodassir@gmail.com",
+      "email": "lazervel@gmail.com",
       "homepage": "https://github.com/shahzadamodassir"
-    },
-    {
-      "name": "Shahzadi Afsara",
-      "email": "shahzadiafsara@gmail.com",
-      "homepage": "https://github.com/lazervel"
     }
   ],
   "funding": [
     {
       "type": "Github",
       "url": "https://github.com/shahzadamodassir"
+    },
+    {
+      "type": "Patreon",
+      "url": "https://patreon.com/shahzadamodassir"
+    },
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/shahzadamodassir"
     }
   ],
-  "minimum-stability": "beta",
-  "require": {}
+  "minimum-stability": "stable"
 }
