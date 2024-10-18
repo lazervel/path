@@ -295,7 +295,10 @@ abstract class PathBuilder extends PathHelper
    */
   public static function toNamespcedPath(string $path) : string
   {
-
+    return self::namespace
+      .\preg_replace_callback(self::MULTI_SEP, function($matched) {
+      return $matched[1] ? self::UNC : $matched[3] ?? $matched[2];
+    }, $path);
   }
 
   /**
