@@ -40,6 +40,7 @@ or add it by hand to your `composer.json` file.
 - BSEP
 - FSEP
 - sep
+- sanitize
 - isLocal
 - delimiter
 - normalize
