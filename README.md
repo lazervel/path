@@ -25,7 +25,6 @@ or add it by hand to your `composer.json` file.
 ## Features
 
 - separate
-- refresh
 - basename
 - dirname
 - extname
@@ -34,9 +33,7 @@ or add it by hand to your `composer.json` file.
 - pathname
 - format
 - parse
-- rTrimSep
 - isAbsolute
-- clean
 - join
 - real
 - BSEP
