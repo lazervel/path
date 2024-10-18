@@ -34,11 +34,13 @@ or add it by hand to your `composer.json` file.
 - format
 - parse
 - isAbsolute
+- lastDir
 - join
 - real
 - BSEP
 - FSEP
 - sep
+- isLocal
 - delimiter
 - normalize
 - relative
