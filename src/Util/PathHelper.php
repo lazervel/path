@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Path\Util;
 
-abstract class PathHelper
+trait PathHelper
 {
-  abstract static function sanitize(string $path);
-
   /**
    * 
    * @param string &$array
