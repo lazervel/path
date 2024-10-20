@@ -288,10 +288,13 @@ abstract class PathBuilder extends PathHelper
   }
 
   /**
-   * 
+   * On Windows systems only, returns an equivalent namespace-prefixed path for the given path.
+   * If path is not a string, path will be returned without modifications.
+   * This method is meaningful only on Windows system. On POSIX systems,
+   * the method is non-operational and always returns path without modifications.
    * 
    * @param string $path [required]
-   * @return string
+   * @return string namespaced-path
    */
   public static function toNamespcedPath(string $path) : string
   {

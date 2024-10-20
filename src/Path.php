@@ -33,7 +33,9 @@ class Path extends PathBuilder
   }
 
   /**
-   * 
+   * Returns a path string from an array-object - the opposite of parse().
+   * format method are same work as `phpinfo` method But there install the
+   * extra property `root` property to getting current root [dir] of path
    * 
    * @param array $pathObject [required]
    * @return string
@@ -109,7 +111,9 @@ class Path extends PathBuilder
   }
 
   /**
-   * 
+   * Determines whether {path} is an absolute path. An absolute path will always resolve
+   * to the same location, regardless of the working directory.
+   * If the given {path} is a zero-length string, false will be returned.
    * 
    * @param string $path [required]
    * @return bool
@@ -120,6 +124,14 @@ class Path extends PathBuilder
     return !!$matched && !\str_ends_with($matched, self::delimiter);
   }
 
+  /**
+   * Returns an array-object from a path string - the opposite of format().
+   * parse method are same work as `phpinfo` method But there install the
+   * extra property `root` property to getting current root [dir] of path
+   * 
+   * @param string $path [required]
+   * @return array format LIKE (root, dir, base, ext, name)
+   */
   public static function parse(string $path) : string
   {
     return [
@@ -132,7 +144,9 @@ class Path extends PathBuilder
   }
 
   /**
-   * 
+   * Solve the relative path from {from} to {to} based on the current working directory.
+   * At times we have two absolute paths, and we need to derive the relative path from
+   * one to the other. This is actually the reverse transform of path.resolve.
    * 
    * @param string $from [required]
    * @param string $to   [required]
@@ -187,13 +201,21 @@ class Path extends PathBuilder
     return \substr($path, \strlen(self::rootname($path)));
   }
 
+  /**
+   * Join all arguments together and normalize the resulting path string.
+   * 
+   * @param array<string|null> $paths [required]
+   * @return string joined path string
+   */
   public static function join(string ...$paths) : string
   {
     return self::normalize(self::stripe($paths));
   }
 
   /**
-   * 
+   * Normalize a string path, reducing '..' and '.' parts. When multiple slashes are found,
+   * they're replaced by a single one; when the path contains a trailing slash,
+   * it is preserved. On Windows backslashes are used.
    * 
    * @param string $path [required]
    * @return string
@@ -226,7 +248,12 @@ class Path extends PathBuilder
   }
 
   /**
-   * 
+   * The right-most parameter is considered {to}. Other parameters are considered an array of {from}.
+   * Starting from leftmost {from} parameter, resolves {to} to an absolute path.
+   * If {to} isn't already absolute, {from} arguments are prepended in right to left order, until an
+   * absolute path is found. If after using all {from} paths still no absolute path is found,
+   * the current working directory is used as well. The resulting path is normalized, and trailing
+   * slashes are removed unless the path gets resolved to the root directory.
    * 
    * @param string[] $paths [required]
    * @return string
@@ -238,7 +265,9 @@ class Path extends PathBuilder
   }
 
   /**
-   * 
+   * Returns trailing name component of path basename, Its used to find, read and write files.
+   * Return the last portion of a path. Similar to the Unix basename command.
+   * Often used to extract the file name from a fully qualified path.
    * 
    * @param string $path   [required]
    * @param string $suffix [optional]
