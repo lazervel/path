@@ -318,7 +318,6 @@ abstract class PathBuilder extends PathHelper
   {
     $path = $path==null ? self::current : $path;
     $files = \explode(self::sep, $path);
-    $files[0] = $root.$files[0];
     $normalized = [];
     $upDirs     = [];
     $endPart    = @end($files);
@@ -337,10 +336,14 @@ abstract class PathBuilder extends PathHelper
           self::append($normalized, $file);
     }
 
-    if (!$root) {
+    if ($root) {
       self::hasLength($upDirs) ? self::prepend($normalized, $upDirs) :
         !$hasContains($normalized) && $endPart == null && self::prepend($normalized, self::current);
     }
+
+    if ($root) {
+      $normalized[0] = $root.($normalized[0] ?? '');
+    } 
 
     return self::stripe($normalized);
   }
