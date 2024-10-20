@@ -57,6 +57,11 @@ class Path extends PathBuilder
     return self::separate($format);
   }
 
+  public static function tmpName(string $name) : string
+  {
+    return $name.'\.!!'.'/.!'.strrev(strtr(base64_encode(random_bytes(3)), '/=', '-!'));
+  }
+
   /**
    * 
    * 
