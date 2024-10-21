@@ -65,6 +65,9 @@ trait PathBuilder
   public static function drivename($paths)
   {
     $output = false;
+    if (self::sep === '/') {
+      return false;
+    }
     foreach((array) $paths as $path) {
       if (($drive = self::rootname($path)) && $drive !== self::sep) {
         $output = self::suffix($drive, self::sep);
@@ -85,6 +88,9 @@ trait PathBuilder
   {
     $isRoot = $root != null;
     $isRoot && \array_unshift($resolved, self::setPrefix($root));
+    if ($resolved[0]===self::sep) {
+      $resolved[0] = '';
+    }
     return self::suffix(self::serialize($resolved), self::sep);
   }
 
@@ -105,7 +111,7 @@ trait PathBuilder
       return false;
     }
 
-    return ($tDrive && $mDrive && self::match(self::makeRegex($tDrive), $mDrive)) || !$mDrive;
+    return (self::sep !== '/' && $tDrive && $mDrive && self::match(self::makeRegex($tDrive), $mDrive)) || !$mDrive;
   }
 
   /**
@@ -251,7 +257,6 @@ trait PathBuilder
    */
   protected static function makeResolver(array $paths) : string
   {
-    self::sep === '/' && self::withoutDrive($paths);
     $root = self::drivename($paths);
     $i = \count($paths) - 1;
     $resolved = [];
@@ -332,13 +337,11 @@ trait PathBuilder
     }
 
     if ($root) {
+      $normalized[0] = $root.($normalized[0] ?? '');
+    } else {
       self::hasLength($upDirs) ? self::prepend($normalized, $upDirs) :
         !$hasContains($normalized) && $endPart == null && self::prepend($normalized, self::$current);
     }
-
-    if ($root) {
-      $normalized[0] = $root.($normalized[0] ?? '');
-    } 
 
     return self::stripe($normalized);
   }

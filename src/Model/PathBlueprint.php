@@ -232,7 +232,7 @@ trait PathBlueprint
     if (\preg_match(self::$SELF_CURDIR, $path, $matches)) {
       return $matches[1];
     }
-    return self::makeNormalizer(self::rootname($path), self::pathname($path));
+    return self::makeNormalizer(self::sep === '/' ? '' : self::rootname($path), self::sep === '/' ? $path : self::pathname($path));
   }
 
   /**
@@ -267,7 +267,7 @@ trait PathBlueprint
    */
   public static function resolve(string ...$paths) : string
   {
-    self::prepend($paths, \getcwd());
+    self::prepend($paths, self::sep === '/' ? '/'.self::pathname(\getcwd()) : \getcwd());
     return self::normalize(self::makeResolver(self::serialize($paths, true)));
   }
 
