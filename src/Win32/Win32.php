@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Path\Win32;
 
 use Path\Model\PathBlueprint;
-use Path\Base;
 
-final class Win32 extends Base
+final class Win32
 {
   use PathBlueprint;
-  
-  protected const regsep = self::WIN32REGSEP;
+
+  protected const isPosix = false;
   public const delimiter = ';';
   public const sep = '\\';
+  protected const regsep = '\\\\';
 }
 ?>

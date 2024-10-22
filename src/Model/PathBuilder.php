@@ -4,70 +4,133 @@ declare(strict_types=1);
 
 namespace Path\Model;
 
-use Path\Exception\RTException;
-use Path\Util\PathHelper;
-
 trait PathBuilder
 {
-  use PathHelper;
-
   private static $MULTI_SEP = '/(?:^(['.self::regsep.']{2})(?=[^'.self::regsep.']+['.self::regsep.']+[^'.self::regsep.']+['.self::regsep.']?)|(['.self::regsep.'])['.self::regsep.']*)/';
-  private static $CUR_DIR = '/^[.]['.self::regsep.']|['.self::regsep.'][.](?=['.self::regsep.']|$)/';
-  
+  private static $CUR_DIR = '/['.self::regsep.'][.](?=['.self::regsep.']|$)/';
+  private static $consecutive_sep = ('/([\\\\\/])[\\\\\/]*/');
+
   private static $parent = '..';
   private static $current = '.';
 
+  private static $togglesep = self::sep == '\\' ? '/' : '\\';
   private static $SELF_CURDIR = '/^(\.[\\\\\/]?)[\\\\\/]*$/';
   private static $ROOT = '/^(?:(?:['.self::regsep.']{2})[^'.self::regsep.']+['.self::regsep.']+[^'.self::regsep.']+['.self::regsep.']?|(?:[A-Z]:)*['.self::regsep.']?)|/';
 
   /**
-   * Perform a regular expression search and replace with convert subject multiple consecutive
-   * slashes (both forward '/' and backward '\'). to single slash
    * 
-   * @param string|string[] $pattern     [required]
-   * @param string|string[] $replacement [required]
-   * @param string|string[] $subject     [required]
    * 
-   * @return mixed
+   * @param iterable $paths [required]
+   * @param bool     $isMap [optional]
+   * 
+   * @return string|string[]
    */
-  private static function replace($pattern, $replacement, $subject)
+  public static function serialize(iterable $paths, bool $isMap = false)
   {
-    return \preg_replace($pattern, $replacement, \str_replace(['/', '\\'], self::sep, $subject));
+    return $isMap ? \array_map([self::class, 'sanitize'], $paths, [$isMap]) : self::sanitize(self::joins($paths));
   }
 
   /**
-   * Returns a Regular-Expression string It's used to verify path drive.
    * 
-   * @param string $source [required]
-   * @return string A Regular-Expression
+   * 
+   * @param string|string[] $paths [required]
+   * @return string simple joined path with current separator
    */
-  private static function makeRegex(string $source)
+  private static function joins($paths)
   {
-    return \sprintf('/^%s/', \str_replace(self::sep, '\\\\', $source));
+    return \is_array($paths) ? \join(self::sep, $paths) : $paths;
+  }
+
+  /**
+   * 
+   * 
+   * @param string $path    [required]
+   * @param bool   $autoSep [optional]
+   * 
+   * @return string Returns escaped path
+   */
+  public static function escape(string $path, bool $autoSep = true) : string
+  {
+    return \preg_replace(self::$consecutive_sep, '$1', $autoSep ? self::adjust($path) : $path);
   }
 
   /**
    * 
    * 
    * @param string $path [required]
-   * @return stdClass
+   * @return object path info
    */
-  public static function pathInfo(string $path)
+  private static function info(string $path) : object
   {
     return (object) \pathinfo($path);
   }
 
   /**
    * 
-   * @param string|string[] $paths [required]
-   * @return string|false
+   * 
+   * @param string $path [required]
+   * @return string adjustedd path
    */
-  public static function drivename($paths)
+  private static function adjust(string $path) : string
   {
-    $output = false;
-    if (self::sep === '/') {
-      return false;
+    return \str_replace(self::$togglesep, self::sep, $path);
+  }
+
+  /**
+   * 
+   * 
+   * @param string|string[] $paths   [required]
+   * @param bool            $isPosix [optional]
+   * 
+   * @return string separated path string
+   */
+  public static function separate($paths, bool $isPosix = self::isPosix) : string
+  {
+    $path = self::canonicalize(self::joins($paths));
+    $sep  = ($isPosix ? '/' : '\\');
+    return $sep !== self::sep ? \str_replace(self::sep, $sep, $path) : $path;
+  }
+
+  /**
+   * 
+   * 
+   * @param string $path   [required]
+   * @param string $suffix [optional]
+   * @param int    $levels [optional]
+   * 
+   * @return string path of directory
+   */
+  public static function dirname(string $path, string $suffix = '', int $levels = 1) : string
+  {
+    $dirname = \dirname($path, $levels);
+    $lastsep = \substr($path, \strlen($dirname), 1);
+
+    // Returns current directory '.' if $dirname is eq to null
+    if ($dirname == null) {
+      return self::$current;
     }
+
+    // Handle: for posix operating system (Linux, MacOs)
+    if (($posix = self::isPosix)) {
+      if (self::escape($path, false) === self::$togglesep) {
+        return self::$current;
+      } elseif ($lastsep === self::$togglesep) {
+        return self::dirname($dirname, $suffix, $levels);
+      }
+    }
+
+    return $posix && $dirname===self::$togglesep ? self::sep : self::suffix($dirname, $suffix);
+  }
+
+  /**
+   * for win32
+   * 
+   * @param string|string[] $paths [required]
+   * @return string|null
+   */
+  private static function getdrive($paths)
+  {
+    $output = null;
     foreach((array) $paths as $path) {
       if (($drive = self::rootname($path)) && $drive !== self::sep) {
         $output = self::suffix($drive, self::sep);
@@ -77,250 +140,115 @@ trait PathBuilder
   }
 
   /**
-   * Returns resolved path, To arranged final resolvement parts.
    * 
-   * @param array   $resolved [required]
-   * @param string  $root     [required]
    * 
-   * @return string resolved string
+   * @param string|bool $target  [required]
+   * @param string|bool $matcher [required]
+   * 
+   * @return bool verified for true otherwise false
    */
-  private static function resolved(array $resolved, string $root)
+  public static function verify($target, &$matcher) : bool
   {
-    $isRoot = $root != null;
-    $isRoot && \array_unshift($resolved, self::setPrefix($root));
-    if ($resolved[0]===self::sep) {
-      $resolved[0] = '';
+    // Support: (Linux, MacOs) operating system.
+    // Don't verify if posix are present.
+    // Returns always true to next operation.
+    if (self::isPosix) {
+      return true;
     }
-    return self::suffix(self::serialize($resolved), self::sep);
+
+    $m = self::getdrive($matcher);
+    $t = self::getdrive($target);
+    
+    // Dont't verify if $matcher is network path.
+    // Now modify given $matcher to slice URI
+    if ($m && self::isURIPath($m)) {
+      $matcher = self::sep.\substr($matcher, \strlen($target));
+    }
+
+    // To check verified conditions.
+    $isVerified = ($t && $m && self::match(self::regex($t), $m)) || !$m;
+
+    // Slice drive of $matcher for win32
+    if ($isVerified && $m) {
+      $matcher = \substr($matcher, \strlen($target));
+    }
+
+    return $isVerified;
+  }
+
+   /**
+   * 
+   * 
+   * @param string|null $root [required]
+   * @param array       $src  [required]
+   * 
+   * @return string attached root directory path
+   */
+  private static function attached(?string $root, array $src)
+  {
+    if ($root != null) {
+      $src[0] = $root.($src[0] ?? '');
+    }
+
+    return self::serialize($src);
   }
 
   /**
    * 
-   * 
-   * @param string $target  [required]
-   * @param string $matcher [required]
-   * 
-   * @return bool verified status
-   */
-  private static function verify(string $target, string $matcher) : bool
-  {
-    $mDrive = self::drivename($matcher);
-    $tDrive = self::drivename($target);
-
-    if ($mDrive && self::isNetwork($mDrive)) {
-      return false;
-    }
-
-    return (self::sep !== '/' && $tDrive && $mDrive && self::match(self::makeRegex($tDrive), $mDrive)) || !$mDrive;
-  }
-
-  /**
-   * Check if a given file path is an network path.
    * 
    * @param string $path [required]
-   * @return bool
+   * @return string Returns pathname
    */
-  public static function isNetwork(string $path) : bool
+  public static function pathname(string $path) : string
   {
-    return !!(self::match(self::$MULTI_SEP, $path, true)[1] ?? false);
+    $path = self::canonicalize($path);
+    return \substr($path, strlen(self::getdrive($path) ?? ''));
+    return '';
   }
 
   /**
    * 
-   * 
-   * - Remove all multiple consecutive slashes '/' and '\' rm redundant ones.
-   * - Not remove occurrences of './', which indicates the current directory.
-   * - Replace all '/' and '\' slashes in path with a single separator slash.
-   * 
-   * @param string[] $path [required]
+   * @param string[] $paths [required]
    * @return string
    */
-  public static function stripe(array $path) : string
+  private static function resolver(array $paths)
   {
-    return self::replace(self::$MULTI_SEP, '$1$2$3', \join(self::sep, $path));
-  }
-
-  /**
-   * Returns system root directory name of path.
-   * 
-   * @param string $path [required]
-   * @return string
-   */
-  public static function rootname(string $path) : string
-  {
-    return self::match(self::$ROOT, $path, true)[0];
-  }
-
-  /**
-   * Returns prefixed data to trim ends separator, again set prefix separator
-   * 
-   * @param string $data [required]
-   * @return string prefixed data
-   */
-  private static function setPrefix(string $data) : string
-  {
-    return $data != null ? self::suffix($data, self::sep).self::sep : $data;
-  }
-
-  /**
-   * 
-   * 
-   * - Remove all multiple consecutive slashes '/' and '\' rm redundant ones.
-   * - Remove all occurrences of './', which indicates the current directory.
-   * - Replace all '/' and '\' slashes in path with a single separator slash.
-   * 
-   * @param string $path [required]
-   * @return string
-   */
-  public static function sanitize(string $path) : string
-  {
-    return self::replace([self::$MULTI_SEP, self::$CUR_DIR], ['$1$2$3', ''], $path);
-  }
-
-  /**
-   * 
-   * 
-   * - Remove all multiple consecutive slashes '/' and '\' rm redundant ones.
-   * - Remove all occurrences of './', which indicates the current directory.
-   * - Replace all '/' and '\' slashes in path with a single separator slash.
-   * 
-   * @param string|string[] $paths [required]
-   * @param string|null     $sep   [optional]
-   * 
-   * @return string
-   * @throws RTException if seprator are invalid
-   */
-  public static function separate($paths, ?string $sep = null) : string
-  {
-    if ($sep && !($sep === '/' || $sep === '\\')) {
-      throw new RTException(sprintf('Cannot separate Invalid separator [%s]', $sep));
-    }
-
-    $sep  = $sep ?? self::sep;
-    $path = self::serialize((array) $paths);
-    return $sep !== self::sep ? \str_replace(self::sep, $sep, $path) : $path;
-  }
-
-  /**
-   * Perform a regular expression match with convert subject multiple consecutive
-   * slashes (both forward '/' and backward '\'). to single slash
-   * 
-   * @param string $pattern       [required]
-   * @param string $subject       [required]
-   * @param bool   $returnMatches [optional]
-   * 
-   * @return array|false
-   */
-  private static function match(string $pattern, string $subject, bool $returnMatches = false)
-  {
-    $isMatched = \preg_match($pattern, self::sanitize($subject), $matches);
-    return $returnMatches ? $matches : $isMatched;
-  }
-
-  /**
-   * 
-   * 
-   * - Remove all multiple consecutive slashes '/' and '\' rm redundant ones.
-   * - Remove all occurrences of './', which indicates the current directory.
-   * - Replace all '/' and '\' slashes in path with a single separator slash.
-   * 
-   * @param iterable $paths [required]
-   * @param bool     $isMap [optional]
-   * 
-   * @return string|array
-   */
-  public static function serialize(iterable $paths, bool $isMap = false)
-  {
-    return $isMap ?
-      \array_map([self::class, 'sanitize'], $paths, [$isMap]) : self::sanitize(\join(self::sep, $paths));
-  }
-
-  private static function withoutDrive(array &$paths)
-  {
-    foreach($paths as $i=>$path) {
-      if (($drive = self::drivename($path))) {
-        $paths[$i] = \substr($path, \strlen($drive));
-      }
-    }
-  }
-  
-  /**
-   * The right-most parameter is considered {to}. Other parameters are considered an array of {from}.
-   * Starting from leftmost {from} parameter, resolves {to} to an absolute path.
-   * If {to} isn't already absolute, {from} arguments are prepended in right to left order, until an
-   * absolute path is found. If after using all {from} paths still no absolute path is found,
-   * the current working directory is used as well. The resulting path is normalized, and trailing
-   * slashes are removed unless the path gets resolved to the root directory.
-   * 
-   * @param array $paths [required]
-   * @return string resolved string
-   */
-  protected static function makeResolver(array $paths) : string
-  {
-    $root = self::drivename($paths);
+    \array_unshift($paths, self::getcwd());
+    $paths = self::serialize($paths, true);
+    $root = self::getdrive($paths) ?? '';
     $i = \count($paths) - 1;
     $resolved = [];
-    $root = $root != null ? $root : '';
-    /**
-     * 
-     * @param string      $path
-     * @param string|null $sep
-     * 
-     * @return string
-     */
-    $modify = function($path, $root, ?string $sep = null) {
-      return $sep.\substr($path, \strlen($root));
-    };
-    /**
-     * 
-     * @param string $root
-     * @param string $path
-     * 
-     * @return void|true
-     */
-    $isStopped = function($root, $path) {
-      if (($path && $path[0] === self::sep)) {
-        return true;
-      }
-    };
 
     for(; $i >= 0; $i--) {
       $path = $paths[$i];
-      if (self::verify($root, $path)) {
-        self::drivename($path) && ($path = $modify($path, $root));
-      }
-      elseif (self::isNetwork($root)) {
-        $path = $modify($path, $root, self::sep);
-      } else {
+      if (!self::verify($root, $path)) {
         continue;
       }
 
-      self::prepend($resolved, $path);
-      if ($isStopped($root, $path)) {
+      \array_unshift($resolved, $path);
+      if ($path && $path[0] === self::sep) {
         break;
       }
     }
 
-    return self::resolved($resolved, $root);
+    return self::suffix(
+      self::attached(
+        self::rootname($root, true), $resolved
+      ), self::sep
+    );
   }
-  
-  /**
-   * Normalize a string path, reducing '..' and '.' parts. When multiple slashes are found,
-   * they're replaced by a single one; when the path contains a trailing slash,
-   * it is preserved. On Windows backslashes are used.
-   * 
-   * @param string $root [required]
-   * @param string $path [required]
-   * 
-   * @return string normalized path
-   */
-  protected static function makeNormalizer(string $root, string $path) : string
+
+  private static function normalizer(string $pathURI) : string
   {
-    $path = $path==null ? self::current : $path;
-    $files = \explode(self::sep, $path);
+    // TODO: Dont't split unPosix separator if isPosix activated
+    // TODO: Fix bugs of posix::ralative of specific version
+    $root  = self::rootname($pathURI);
+    $path  = self::pathname($pathURI);
+    $files = \explode(self::sep, $path==null ? $pathURI : $path);
     $normalized = [];
     $upDirs     = [];
     $endPart    = @end($files);
+    $isAbsolute  = self::rootname($path);
     $hasContains = function(array $array) {
       foreach($array as $data) {
         if ($data != null) {
@@ -330,34 +258,131 @@ trait PathBuilder
       return false;
     };
 
+    // Fix bugs of current directory preview
+    // Reset the files source set with [] if $path is eq to empty
+    if ($path == null) {
+      $files = [];
+    }
+
+    // 
     foreach($files as $file) {
-      $file === self::$parent ?
-        (self::remove($normalized) == null && self::append($upDirs, $file)) :
-          self::append($normalized, $file);
+      if ($file === self::$parent) {
+        \array_pop($normalized)==null && \array_push($upDirs, $file);
+      } else {
+        \array_push($normalized, $file);
+      }
     }
 
-    if ($root) {
-      $normalized[0] = $root.($normalized[0] ?? '');
-    } else {
-      self::hasLength($upDirs) ? self::prepend($normalized, $upDirs) :
-        !$hasContains($normalized) && $endPart == null && self::prepend($normalized, self::$current);
+    // 
+    if (!$isAbsolute) {
+      if (\count($upDirs) > 0) {
+        \array_unshift($normalized, ...$upDirs);
+      } else if (!$hasContains($normalized) && $endPart == null) {
+        \array_unshift($normalized, self::$current);
+      }
     }
+    
+    // Fix bugs of $root directory consecutive slash
+    // 
+    return self::attached($root, $normalized);
+  }
 
-    return self::stripe($normalized);
+  /**
+   * 
+   * 
+   * @param string $path [required]
+   * @return bool true for network path otherwise false
+   */
+  public static function isURIPath(string $path)
+  {
+    return !!(self::match(self::$MULTI_SEP, $path, true)[1] ?? false);
+  }
+
+  /**
+   * 
+   * 
+   * @param string $path [required]
+   * @return string sanitized path
+   */
+  public static function sanitize(string $path) : string
+  {
+    return \preg_replace(self::$MULTI_SEP, '$1$2$3', self::isPosix ? self::escape($path) : self::adjust($path));
+  }
+
+  /**
+   * 
+   * 
+   * @param string $path [required]
+   * @return string canonicalized path
+   */
+  public static function canonicalize(string $path) : string
+  {
+    return \preg_replace(self::$CUR_DIR, '', self::sanitize($path));
+  }
+
+  /**
+   * 
+   * 
+   * @param string $source [required]
+   * @return string Regular-Expression
+   */
+  private static function regex(string $source) : string
+  {
+    return \sprintf('/^%s/', \str_replace(self::sep, self::regsep, $source));
+  }
+
+  /**
+   * 
+   * 
+   * @return string current working directory.
+   */
+  public static function getcwd() : string
+  {
+    $cwd = \getcwd();
+    return self::isPosix ? \preg_replace(self::regex('^[A-Z]:'), '', self::sanitize($cwd)) : $cwd;
+  }
+
+  /**
+   * 
+   * 
+   * @param string $pattern       [required]
+   * @param string $subject       [required]
+   * @param bool   $returnMatches [optional]
+   * 
+   * @return array|false false or matches
+   */
+  private static function match(string $pattern, string $subject, bool $returnMatches = false)
+  {
+    $isMatched = \preg_match($pattern, self::adjust($subject), $matches);
+    return $returnMatches ? $matches : $isMatched;
+  }
+
+  /**
+   * 
+   * 
+   * @param string $path [required]
+   * @return string root directory
+   */
+  public static function rootname(string $path, bool $withPrefix = false) : string
+  {
+    $root = self::match(self::isPosix ? self::regex(self::sep) : self::$ROOT, $path, true)[0] ?? '';
+    return $withPrefix ? (self::suffix($root, self::sep, true).self::sep) : $root;
   }
 
   /**
    * Returns an suffixed data, Triming right side data matched to suffix
    * value but do not trim [data] if [data] and suffix value are equal.
    * 
-   * @param string $data   [required]
-   * @param string $suffix [required]
+   * @param string $data       [required]
+   * @param string $suffix     [required]
+   * @param bool   $allMatched [optional]
    * 
    * @return string suffixed-data string
    */
-  protected static function suffix(string $data, string $suffix) : string
+  private static function suffix(string $data, string $suffix, bool $allMatched = false) : string
   {
-    return $data !== $suffix && \mb_substr($data, - \mb_strlen($suffix)) === $suffix ? \mb_substr($data, 0, - \mb_strlen($suffix)) : $data;
+    $cond = $allMatched ? true : $data !== $suffix;
+    return $cond && \substr($data, - \strlen($suffix)) === $suffix ? \substr($data, 0, - \strlen($suffix)) : $data;
   }
 }
 ?>
