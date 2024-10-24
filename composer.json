@@ -9,7 +9,9 @@
       "Path\\": "src/"
     }
   },
-  "require": {},
+  "require": {
+    "php": "^7.2 || ^8.0"
+  },
   "require-dev": {},
   "authors": [
     {
