@@ -118,6 +118,27 @@ trait PathModel
    * @param string $path [required]
    * @return string
    */
+  public static function optimize(string $path) : string
+  {
+    return self::doNormalize($path, true);
+  }
+
+  /**
+   * 
+   * @param string $path [required]
+   * @return string|false
+   */
+  public static function canonicalize(string $path)
+  {
+    $absPath = self::resolve($path);
+    return self::isLocal($absPath) ? $absPath : false;
+  }
+
+  /**
+   * 
+   * @param string $path [required]
+   * @return string
+   */
   public static function extname(string $path) : string
   {
     return self::info($path)->extension();

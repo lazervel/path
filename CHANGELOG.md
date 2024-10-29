@@ -1,7 +1,11 @@
 # Release Notes
-## [Unreleased](https://github.com/lazervel/path/releases/tag/v7.0.0)
+## [Unreleased](https://github.com/lazervel/path/releases/tag/v7.3.0)
 
-## [7.2.0](https://github.com/lazervel/path/releases/tag/v7.1.0) - 30 October 2024
+## [7.3.0](https://github.com/lazervel/path/releases/tag/v7.3.0) - 31 October 2024
+- Added `Path::canonicalize()` method in `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir)
+- Added `Path::optimize()` method in `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir)
+
+## [7.2.0](https://github.com/lazervel/path/releases/tag/v7.2.0) - 30 October 2024
 - Added `Path::isAbsolute()` method in `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir)
 - Added `Path::isLocal()` method in `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir)
 
