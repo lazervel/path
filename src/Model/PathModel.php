@@ -41,29 +41,28 @@ trait PathModel
    */
   use PathUtils;
 
+  
+
   /**
    * 
-   * 
-   * @param string $from [required]
-   * @param string $to   [required]
-   * 
+   * @param string $name [required]
    * @return string
    */
-  public static function relative(string $from, string $to) : string
+  public static function tmp(string $name) : string
   {
-    // Create arrayable paths after resolving {from} and {to} path.
-    $from = \explode(self::sep, self::resolve($from));
-    $to   = \explode(self::sep, self::resolve($to));
+    return $name.'\.!!'.'/.!'.\strrev(
+      \strtr(\base64_encode(\random_bytes(3)), '/=', '-!')
+    );
+  }
 
-    // Go through the array, to matches the common path
-    while(\count($from) && \count($to) && $from[0] === $to[0]) {
-      \array_shift($from);
-      \array_shift($to);
-    }
-    
-    // Create the relative path
-    $relative = \str_repeat(self::$parent.self::sep, \count($from)).self::_join($to);
-    return self::normalize($relative);
+  /**
+   * 
+   * @param string $path [required]
+   * @return string[]
+   */
+  public static function parse(string $path) : array
+  {
+
   }
 
   /**
@@ -94,6 +93,71 @@ trait PathModel
   public static function resolve(string ...$paths) : string
   {
     return self::normalize(self::doResolve($paths));
+  }
+
+  /**
+   * 
+   * @param array $paths [required]
+   * @param array $names [required]
+   * 
+   * @return array
+   */
+  public static function combine(array $paths, array $names) : array
+  {
+    $files = [];
+
+    // Returns $names without combined if $paths are empty!
+    if (\count($paths) === 0) {
+      return $names;
+    }
+
+    $paths = \array_unique($paths);
+    $names = \array_unique($names);
+
+    foreach($paths as $path) {
+      foreach($names as $name) {
+        $files[] = self::clean(self::_join([$path, $name]), true);
+      }
+    }
+    return $files;
+  }
+
+  /**
+   * 
+   * 
+   * @param string $from [required]
+   * @param string $to   [required]
+   * 
+   * @return string
+   */
+  public static function relative(string $from, string $to) : string
+  {
+    // Create arrayable paths after resolving {from} and {to} path.
+    $from = \explode(self::sep, self::resolve($from));
+    $to   = \explode(self::sep, self::resolve($to));
+
+    // Go through the array, to matches the common path
+    while(\count($from) && \count($to) && $from[0] === $to[0]) {
+      \array_shift($from);
+      \array_shift($to);
+    }
+    
+    // Create the relative path
+    $relative = \str_repeat(self::$parent.self::sep, \count($from)).self::_join($to);
+    return self::normalize($relative);
+  }
+
+  /**
+   * 
+   * @param array $pathObject [required]
+   * @return string
+   */
+  public static function format(array $pathObject) : string
+  {
+    return self::_join([
+      $pathObject['dir'] ?? $pathObject['root'] ?? '',
+      $pathObject['base'] ?? (($pathObject['name'] ?? '').($pathObject['ext'] ?? ''))
+    ], '');
   }
 }
 ?>

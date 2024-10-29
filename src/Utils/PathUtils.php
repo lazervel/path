@@ -244,7 +244,8 @@ trait PathUtils
    */
   public static function dirname(string $path, string $suffix = '', int $levels = 1) : string
   {
-
+    $dirname = \dirname($path, $levels);
+    $lastsep = \substr($path, \strlen($dirname), 1);
   }
 
   /**
@@ -364,9 +365,9 @@ trait PathUtils
    * @param string|string[] $paths [required]
    * @return string The joined paths as a string.
    */
-  private static function _join($paths) : string
+  private static function _join($paths, ?string $sep = null) : string
   {
-    return \is_array($paths) ? \join(self::sep, $paths) : $paths;
+    return \is_array($paths) ? \join($sep ?? self::sep, $paths) : $paths;
   }
 
   /**

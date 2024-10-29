@@ -22,34 +22,7 @@ composer require filesys/path
 
 or add it by hand to your `composer.json` file.
 
-## Features
-
-- separate
-- basename
-- dirname
-- extname
-- rootname
-- filename
-- pathname
-- format
-- parse
-- isAbsolute
-- lastDir
-- drivename
-- join
-- real
-- BSEP
-- FSEP
-- sep
-- sanitize
-- isLocal
-- delimiter
-- normalize
-- relative
-- resolve
-- filePaths
-- toNamespacedPath
-
-## Documentation
-
-Feel free to customize it with specific details relevant to your documentation click [Documentation](https://github.com/lazervel/path/wiki)
+```php
+use Path\Path;
+require 'vendor/autoload.php';
+```
