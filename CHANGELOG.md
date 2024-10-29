@@ -3,7 +3,7 @@
 
 ## [8.0.0](https://github.com/lazervel/path/compare/v7.3.0...v8.0.0)
 - [BC BREAK] Since v8.x, Due to significant updates in the library, all previous configurations may no longer work as expected. Users will need to reconfigure their settings to align with the new structure and behavior introduced in this update.
-- Review the updated documentation for `Path::resolve()`, `Path::normalize`, `Path::join()`, and `Path::optimize()` and `Path::relative()` to understand the new behavior.
+- Review the updated documentation for `Path::resolve()`, `Path::normalize()`, `Path::join()`, and `Path::optimize()` and `Path::relative()` to understand the new behavior.
 - Ensure that any calls to these methods are updated to accommodate these changes.
 
 ## [7.3.0](https://github.com/lazervel/path/releases/tag/v7.3.0) - 31 October 2024
