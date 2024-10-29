@@ -1,6 +1,10 @@
 # Release Notes
 ## [Unreleased](https://github.com/lazervel/path/releases/tag/v7.0.0)
 
+## [7.2.0](https://github.com/lazervel/path/releases/tag/v7.1.0) - 30 October 2024
+- Added `Path::isAbsolute()` method in `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir)
+- Added `Path::isLocal()` method in `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir)
+
 ## [7.1.0](https://github.com/lazervel/path/releases/tag/v7.1.0) - 30 October 2024
 - Added `Path::info()` method to get information about a file path, develope by [@shahzadamodassir](https://github.com/shahzadamodassir)
 - Added `Path::basename()` method develope by [@shahzadamodassir](https://github.com/shahzadamodassir)

@@ -94,6 +94,28 @@ trait PathModel
   /**
    * 
    * @param string $path [required]
+   * @return bool
+   */
+  public static function isAbsolute(string $path) : bool
+  {
+    $matched = self::rootname($path);
+    return !!$matched && !\str_ends_with($matched, ':');
+  }
+
+  /**
+   *
+   * @param string $path [required]
+   * @return bool True if the path is local, false otherwise.
+   */
+  public static function isLocal(string $path) : bool
+  {
+    $absPath = \realpath($path);
+    return $absPath && self::isAbsolute($absPath);
+  }
+
+  /**
+   * 
+   * @param string $path [required]
    * @return string
    */
   public static function extname(string $path) : string
