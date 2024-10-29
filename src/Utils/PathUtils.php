@@ -350,7 +350,10 @@ trait PathUtils
   private static function final(?string $root, array $results) : string
   {
     if ($root != null) {
-      $results[0] = $root.($results[0] ?? '');
+      $first = ($results[0] ?? '');
+      if ($first && $first[0] !== $root) {
+        $results[0] = $root.$first;
+      }
     }
 
     return \preg_replace(self::$fCurDir, '', self::escape(self::_join($results)));
