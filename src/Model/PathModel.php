@@ -41,7 +41,17 @@ trait PathModel
    */
   use PathUtils;
 
-  
+  /**
+   * 
+   * @param string $path  [required]
+   * @param int    $flags [optional]
+   * 
+   * @return object Returns information about a file path.
+   */
+  public static function info(string $path, int $flags = \PATHINFO_ALL) : object
+  {
+    return (object) \array_merge(\pathinfo($path, $flags), ['root' => self::root($path)]);
+  }
 
   /**
    * 
@@ -62,7 +72,33 @@ trait PathModel
    */
   public static function parse(string $path) : array
   {
+    return [
+      'root' => self::rootname($path),
+      'dir'  => self::dirname($path),
+      'base' => self::basename($path),
+      'ext'  => self::extname($path),
+      'name' => self::filename($path)
+    ];
+  }
 
+  /**
+   * 
+   * @param string $path [required]
+   * @return string
+   */
+  public static function filename(string $path) : string
+  {
+    return self::info($path)->filename();
+  }
+
+  /**
+   * 
+   * @param string $path [required]
+   * @return string
+   */
+  public static function extname(string $path) : string
+  {
+    return self::info($path)->extension();
   }
 
   /**
@@ -145,6 +181,16 @@ trait PathModel
     // Create the relative path
     $relative = \str_repeat(self::$parent.self::sep, \count($from)).self::_join($to);
     return self::normalize($relative);
+  }
+
+  /**
+   * 
+   * @param string $path [required]
+   * @return string Returns trailing name component of path.
+   */
+  public static function basename(string $path, string $suffix = '') : string
+  {
+    return \basename($path, $suffix);
   }
 
   /**
