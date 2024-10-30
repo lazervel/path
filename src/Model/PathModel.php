@@ -50,7 +50,7 @@ trait PathModel
    */
   public static function info(string $path, int $flags = \PATHINFO_ALL) : object
   {
-    return (object) \array_merge(\pathinfo($path, $flags), ['root' => self::root($path)]);
+    return (object) \array_merge(\pathinfo($path, $flags), ['root' => self::rootname($path)]);
   }
 
   /**
@@ -88,7 +88,7 @@ trait PathModel
    */
   public static function filename(string $path) : string
   {
-    return self::info($path)->filename();
+    return self::info($path)->filename;
   }
 
   /**
@@ -141,7 +141,7 @@ trait PathModel
    */
   public static function extname(string $path) : string
   {
-    return self::info($path)->extension();
+    return self::info($path)->extension;
   }
 
   /**

@@ -1,6 +1,10 @@
 # Release Notes
 ## [Unreleased](https://github.com/lazervel/path/compare/v7.3.0...v8.0.0)
 
+## [8.0.1](https://github.com/lazervel/path/releases/tag/v8.0.1) - 01 November 2024
+- Fixed error handling for method calls to prevent unexpected runtime errors of `Path::extname()`, `Path::filename()` and `Path::info()`.
+- Enhanced validation checks to ensure proper usage of properties and methods, reducing the likelihood of errors.
+
 ## [8.0.0](https://github.com/lazervel/path/compare/v7.3.0...v8.0.0) - 01 November 2024
 - [BC BREAK] Since v8.x, Due to significant updates in the library, all previous configurations may no longer work as expected. Users will need to reconfigure their settings to align with the new structure and behavior introduced in this update.
 - Review the updated documentation for `Path::resolve()`, `Path::normalize()`, `Path::join()`, and `Path::optimize()` and `Path::relative()` to understand the new behavior.
