@@ -24,6 +24,7 @@ namespace Path\Model;
 
 use Path\Exception\RTException;
 use Path\Utils\PathUtils;
+use Url\Url;
 
 /**
  * @uses PathUtils
@@ -84,18 +85,6 @@ trait PathModel
 
   /**
    * 
-   * @param callable $f    [required]
-   * @param array    $args [required]
-   * 
-   * @return string[]
-   */
-  public static function callMap(callable $f, array $args) : array
-  {
-    return \call_user_func_array($f, $args);
-  }
-
-  /**
-   * 
    * @param string $path [required]
    * 
    */
@@ -148,6 +137,17 @@ trait PathModel
     return self::doNormalize($path, true);
   }
 
+  /**
+   * 
+   * @param callable|string $method [required]
+   * @param string[]        $args   [required]
+   * 
+   * @return string[]
+   */
+  public static function callMap($method, array $args) : array
+  {
+    return \array_map(!\is_callable($method) ?  [self::class, $method] : $method, $args);
+  }
 
 
   /**
@@ -265,6 +265,16 @@ trait PathModel
 
   /**
    * 
+   * @param string $url [required]
+   * @return string
+   */
+  public static function UrlToPath(string $url) : string
+  {
+    return self::resolve((new Url($url))->pathname);
+  }
+
+  /**
+   * 
    * @param array $pathObject [required]
    * @return string
    */
@@ -274,6 +284,20 @@ trait PathModel
       $pathObject['dir'] ?? $pathObject['root'] ?? '',
       $pathObject['base'] ?? (($pathObject['name'] ?? '').($pathObject['ext'] ?? ''))
     ], '');
+  }
+
+  /**
+   * 
+   * @param string $path   [required]
+   * @param string $origin [required]
+   * @param string $query  [optional]
+   * @param string $hash   [optional]
+   * 
+   * @return string
+   */
+  public static function pathToURL(string $path, string $origin, ?string $query = '', ?string $hash = '') : string
+  {
+    return self::suffix($origin, '/').'/'.self::posix::optimize(self::prefix('/', $path, false)).self::prefix('?', $query).self::prefix('#', $hash);
   }
 }
 ?>

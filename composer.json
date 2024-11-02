@@ -10,9 +10,9 @@
     }
   },
   "require": {
-    "php": "^7.2 || ^8.0"
+    "php": "^7.2 || ^8.0",
+    "web/url": "^1.0"
   },
-  "require-dev": {},
   "authors": [
     {
       "name": "Shahzada Modassir",

@@ -1,9 +1,13 @@
 # Release Notes
 ## [Unreleased](https://github.com/lazervel/path/compare/v7.3.0...v8.0.0)
 
+## [8.2.0](https://github.com/lazervel/path/releases/tag/v8.2.0) - 04 November 2024
+- Added `Path::pathToURL()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
+- Added `Path::UrlToPath()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
+
 ## [8.1.0](https://github.com/lazervel/path/releases/tag/v8.1.0) - 02 November 2024
 - Added `Path::callMap()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
-- Added `Path::checkLength()` method i PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
+- Added `Path::checkLength()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
 
 ## [8.0.1](https://github.com/lazervel/path/releases/tag/v8.0.1) - 01 November 2024
 - Fixed error handling for method calls to prevent unexpected runtime errors of `Path::extname()`, `Path::filename()` and `Path::info()`.

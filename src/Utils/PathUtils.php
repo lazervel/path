@@ -433,5 +433,26 @@ trait PathUtils
     $cond = $allMatched ? true : $data !== $suffix;
     return $cond && \substr($data, - \strlen($suffix)) === $suffix ? \substr($data, 0, - \strlen($suffix)) : $data;
   }
+
+  /**
+   * !Important: For internal use only.
+   * 
+   * This method checks if the provided string ends with the specified prefix.
+   * If it does, the method returns the string without that prefix.
+   * If the prefix does not match, the original string is returned unchanged.
+   * 
+   * @param string $prefix     [required]
+   * @param string $data       [required]
+   * @param bool   $allMatched [optional]
+   * 
+   * @return string The modified string without the prefix,
+   * or the original string if no match.
+   */
+  private static function prefix(string $prefix, string $data, bool $addPrefix = true, bool $allMatched = false) : string
+  {
+    $cond = $allMatched ? true : $data !== $prefix;
+    $prefixed = $cond && \substr($data, 0, \strlen($prefix)) === $prefix ? \substr($data, \strlen($prefix)) : $data;
+    return $addPrefix && $prefixed != null ? $prefix.$prefixed : $prefixed;
+  }
 }
 ?>
