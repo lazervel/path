@@ -1,6 +1,6 @@
 # PHP Path
 
-Help with handling or manipulating file and directory path.
+PHP Path Help with handling or manipulating file and directory path.
 
 ![Banner](https://raw.githubusercontent.com/lazervel/assets/main/banners/path.png)
 
@@ -26,3 +26,4 @@ or add it by hand to your `composer.json` file.
 use Path\Path;
 require 'vendor/autoload.php';
 ```
+ one
