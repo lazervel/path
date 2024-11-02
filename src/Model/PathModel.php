@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace Path\Model;
 
+use Path\Exception\RTException;
 use Path\Utils\PathUtils;
 
 /**
@@ -83,6 +84,30 @@ trait PathModel
 
   /**
    * 
+   * @param callable $f    [required]
+   * @param array    $args [required]
+   * 
+   * @return string[]
+   */
+  public static function callMap(callable $f, array $args) : array
+  {
+    return \call_user_func_array($f, $args);
+  }
+
+  /**
+   * 
+   * @param string $path [required]
+   * 
+   */
+  public static function checkLength(string $path) : void
+  {
+    \strlen($path) > \PHP_MAXPATHLEN && throw new RTException(
+      \sprintf('Invalid path because path length exceeds [%d] characters.', \PHP_MAXPATHLEN)
+    );
+  }
+
+  /**
+   * 
    * @param string $path [required]
    * @return string
    */
@@ -122,6 +147,8 @@ trait PathModel
   {
     return self::doNormalize($path, true);
   }
+
+
 
   /**
    * 
