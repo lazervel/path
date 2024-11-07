@@ -33,39 +33,58 @@ use Path\Exception\RTException;
  */
 trait PathUtils
 {
-  /**
-   * 
-   * 
-   * @var string $MULTI_SEP
-   */
   private static $MULTI_SEP = '/(?:^(['.self::regsep.']{2})(?=[^'.self::regsep.']+['.self::regsep.']+[^'
   .self::regsep.']+['.self::regsep.']?)|(['.self::regsep.'])['.self::regsep.']*)/';
 
-  /** @var string $CUR_DIR To matches the current directory with slash or not slash. */
+  /**
+   * To matches the current directory with slash or not slash.
+   * 
+   * @var string
+   */
   private static $CUR_DIR = '/[\\\\\/][.](?=[\\\\\/]|$)/';
 
-  private static $isPosix = self::sep === '\\' ? false : true;
-
-  /** @var string $togglesep Switch the separator to opposit of the current separator. */
-  private static $togglesep = self::sep == '\\' ? '/' : '\\';
-
-  /** @var string $consep To matches the consecutive slashes. */
-  private static $consep = ('/([\\\\\/])[\\\\\/]*/');
-
-  /** @var string $parent Representing the dot operator for the parent directory. */
-  private static $parent = '..';
-
-  /** @var string $curdir Representing the dot operator for the current directory. */
-  private static $curdir = '.';
-
-  /** @var string $fCurDir To matches the first current directory './' or '.\' */
+  /**
+   * To matches the first current directory './' or '.\'
+   * 
+   * @var string
+   */
   private static $fCurDir = '/^(?:\.[\\\\\/])(?=.)/';
 
   /**
+   * Switch the separator to opposit of the current separator.
    * 
-   * 
-   * @var string $ROOT
+   * @var string
    */
+  private static $togglesep = self::sep == '\\' ? '/' : '\\';
+
+  /**
+   * isPosix the identify with (Linux/MacOs) for the current platform.
+   * 
+   * @var bool
+   */
+  private static $isPosix = self::sep === '\\' ? false : true;
+
+  /**
+   * To matches the consecutive slashes.
+   * 
+   * @var string
+   */
+  private static $consep = ('/([\\\\\/])[\\\\\/]*/');
+
+  /**
+   * Representing the dot operator for the parent directory.
+   * 
+   * @var string
+   */
+  private static $parent = '..';
+
+  /**
+   * Representing the dot operator for the current directory.
+   * 
+   * @var string
+   */
+  private static $curdir = '.';
+
   private static $ROOT = '/^(?:(?:['.self::regsep.']{2})[^'.self::regsep.']+['.self::regsep.']+[^'
   .self::regsep.']+['.self::regsep.']?|(?:[A-Z]:)*['.self::regsep.']?)|/';
 
