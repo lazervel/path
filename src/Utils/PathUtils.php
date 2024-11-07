@@ -44,6 +44,8 @@ trait PathUtils
   /** @var string $CUR_DIR To matches the current directory with slash or not slash. */
   private static $CUR_DIR = '/[\\\\\/][.](?=[\\\\\/]|$)/';
 
+  private static $isPosix = self::sep === '\\' ? false : true;
+
   /** @var string $togglesep Switch the separator to opposit of the current separator. */
   private static $togglesep = self::sep == '\\' ? '/' : '\\';
 
@@ -114,8 +116,8 @@ trait PathUtils
    */
   private static function escape(string $path, bool $fAutoSep = false) : string
   {
-    $path = $fAutoSep || !self::isPosix ? \str_replace(self::$togglesep, self::sep, $path) : $path;
-    return self::isPosix ?
+    $path = $fAutoSep || !self::$isPosix ? \str_replace(self::$togglesep, self::sep, $path) : $path;
+    return self::$isPosix ?
       \preg_replace(self::$consep, '$1', $path) : \preg_replace(self::$MULTI_SEP, '$1$2$3', $path);
   }
 
@@ -281,7 +283,7 @@ trait PathUtils
    */
   public static function rootname(string $path) : string
   {
-    return self::match(self::isPosix ? '/^'.self::regsep.'/' : self::$ROOT, $path, true)[0] ?? '';
+    return self::match(self::$isPosix ? '/^'.self::regsep.'/' : self::$ROOT, $path, true)[0] ?? '';
   }
 
   /**
@@ -295,7 +297,7 @@ trait PathUtils
   public static function getcwd() : string
   {
     $cwd = self::escape(\getcwd(), true);
-    return self::isPosix ? \preg_replace('/^[A-Z]:/', '', $cwd) : $cwd;
+    return self::$isPosix ? \preg_replace('/^[A-Z]:/', '', $cwd) : $cwd;
   }
 
   /**
@@ -389,7 +391,7 @@ trait PathUtils
   {
     // SKIP the drive verification, All check passed!
     // Don't check drive verification of the path drive for POSIX (Linux/MacOs) platform.
-    if (self::isPosix) {
+    if (self::$isPosix) {
       return true;
     }
 

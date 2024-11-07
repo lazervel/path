@@ -69,14 +69,6 @@ class Path
 
   /**
    * !Important: For internal use only.
-   * isPosix the identify with (Linux/MacOs) for the current platform.
-   * 
-   * @var bool isPosix
-   */
-  protected const isPosix = self::sep === Win32::sep ? false : true;
-
-  /**
-   * !Important: For internal use only.
    * Representing the directory separator RegExp source for the current platform.
    * 
    * @var string regsep

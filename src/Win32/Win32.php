@@ -46,14 +46,6 @@ class Win32
   use PathModel;
 
   /**
-   * !Important: For internal use only.
-   * Representing the isPosix always false for the (Linux/MacOs) platform.
-   * 
-   * @var bool isPosix
-   */
-  protected const isPosix = false;
-
-  /**
    * Representing the delimiter for the (Windows) platform.
    * 
    * @var string delimiter

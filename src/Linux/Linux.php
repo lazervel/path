@@ -46,14 +46,6 @@ class Linux
   use PathModel;
 
   /**
-   * !Important: For internal use only.
-   * Representing the isPosix always true for the (Linux/MacOs) platform.
-   * 
-   * @var bool isPosix
-   */
-  protected const isPosix = true;
-
-  /**
    * Representing the delimiter for the (Linux/MacOs) platform.
    * 
    * @var string delimiter
