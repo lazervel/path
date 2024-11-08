@@ -127,6 +127,8 @@ Path::checkLength('your-path');
 // Returns: if given path of length are valid so return (void) otherwise throwing RTException Error.
 // PHP Fatal error:  Uncaught Path\Exception\RTException: Invalid path because path length exceeds [2048] characters.
 ```
+### Throwing Error
+**Path\Exception\RTException: Invalid path because path length exceeds [2048] characters.**
 
 ## Path::delimiter
 ```php
@@ -174,7 +176,25 @@ Path::extname('C:/xampp/htdocs/example.md');
 ```
 
 ## Path::isAbsolute($path)
+
+For example, on POSIX:
+
 ```php
+Path::isAbsolute('/foo/bar'); // Returns: true
+Path::isAbsolute('/baz/..');  // Returns: true
+Path::isAbsolute('qux/');     // Returns: false
+Path::isAbsolute('.');        // Returns: false
+```
+
+On Windows:
+```php
+Path::isAbsolute('//server');    // Returns: true
+Path::isAbsolute('\\\\server');  // Returns: true
+Path::isAbsolute('C:/foo/..');   // Returns: true
+Path::isAbsolute('C:\\foo\\..'); // Returns: true
+Path::isAbsolute('bar\\baz');    // Returns: false
+Path::isAbsolute('bar/baz');     // Returns: false
+Path::isAbsolute('.');           // Returns: false
 ```
 
 ## Path::isLocal($path)
@@ -187,10 +207,34 @@ Path::extname('C:/xampp/htdocs/example.md');
 
 ## Path::join([...$paths])
 ```php
+Path::join('/foo', 'bar', 'baz/asdf', 'quux', '..');
+// Returns: '/foo/bar/baz/asdf'
+
+Path::join('foo', [], 'bar');
+// Throws TypeError: Path\Path::join(): Argument #2 must be of type string, array given.
 ```
 
 ## Path::normalize($path)
+
+For example, on POSIX:
+
 ```php
+Path::normalize('/foo/bar//baz/asdf/quux/..');
+// Returns: '/foo/bar/baz/asdf'
+```
+
+On Windows:
+
+```php
+Path::normalize('C:\\temp\\\\foo\\bar\\..\\');
+// Returns: 'C:\\temp\\foo\\'
+```
+
+Since Windows recognizes multiple path separators, both separators will be replaced by instances of the Windows preferred separator (`\`):
+
+```php
+Path::win32::normalize('C:////temp\\\\/\\/\\/foo/bar');
+// Returns: 'C:\\temp\\foo\\bar'
 ```
 
 ## Path::optimize($path)
@@ -210,15 +254,55 @@ Path::extname('C:/xampp/htdocs/example.md');
 ```
 
 ## Path::posix
-```php
-```
+
+The `Path::posix` property provides access to POSIX specific implementations of the `Path` methods.
+
+The API is accessible via `Path\Path::posix` or `Path\Linux\Linux::class`.
 
 ## Path::relative($from, $to)
+
+For example, on POSIX:
+
 ```php
+Path::relative('/data/orandea/test/aaa', '/data/orandea/impl/bbb');
+// Returns: '../../impl/bbb'
+```
+
+On Windows:
+
+```php
+Path::relative('C:\\orandea\\test\\aaa', 'C:\\orandea\\impl\\bbb');
+// Returns: '..\\..\\impl\\bbb'
 ```
 
 ## Path::resolve($path)
+
+For example, on POSIX:
+
 ```php
+Path::resolve('/foo/bar', './baz');
+// Returns: '/foo/bar/baz'
+
+Path::resolve('/foo/bar', '/tmp/file/');
+// Returns: '/tmp/file'
+
+Path::resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
+// If the current working directory is /home/myself/node,
+// this returns '/home/myself/node/wwwroot/static_files/gif/image.gif'
+```
+
+On Windows:
+
+```php
+Path::resolve('/foo/bar', './baz');
+// Returns: 'G:\foo\bar\baz'
+
+Path::resolve('/foo/bar', '/tmp/file/');
+// Returns: 'G:\tmp\file'
+
+Path::resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
+// If the current working directory is C:\xampp\htdocs/,
+// this returns 'C:\xampp\htdocs\wwwroot\static_files\gif\image.gif'
 ```
 
 ## Path::rootname($path)
@@ -226,8 +310,22 @@ Path::extname('C:/xampp/htdocs/example.md');
 ```
 
 ## Path::sep
+
+For example, on POSIX:
+
 ```php
+explode(Path::sep, 'foo/bar/baz');
+// Returns: ['foo', 'bar', 'baz']
 ```
+
+On Windows:
+
+```php
+explode(Path::sep, 'foo\\bar\\baz');
+// Returns: ['foo', 'bar', 'baz']
+```
+
+On Windows, both the forward slash (`/`) and backward slash (`\`) are accepted as path segment separators; however, the `Path` methods only add backward slashes (`\`).
 
 ## Path::tmp($name)
 ```php
@@ -242,5 +340,7 @@ Path::extname('C:/xampp/htdocs/example.md');
 ```
 
 ## Path::win32
-```php
-```
+
+The `Path::win32` property provides access to Windows specific implementations of the `Path` methods.
+
+The API is accessible via `Path\Path::win32` or `Path\Win32\Win32::class`.
