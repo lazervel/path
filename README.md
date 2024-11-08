@@ -90,6 +90,9 @@ Path::posix::canonicalize('/path/composer.json');
 ```
 
 ## Path::combine($paths, $names)
+
+For example, on POSIX:
+
 ```php
 Path::combine(['C:/xampp/htdocs'], ['example.html']);
 // Returns: ['C:\xampp\htdocs\example.html']
@@ -102,10 +105,11 @@ Path::combine(['C:/xampp/htdocs'], ['example.html', 'foo.txt']);
 
 Path::combine(['C:/xampp/htdocs', '/path'], ['example.html', 'foot.txt', '.env']);
 // Returns: ['C:\xampp\htdocs\example.html', 'C:\xampp\htdocs\foot.txt', 'C:\xampp\htdocs\.env', '\path\example.html', '\path\foot.txt', '\path\.env']
+```
 
-/**
- * For POSIX (Linux/macOs) operating system.
- */
+On Windows:
+
+```php
 Path::posix::combine(['C:\xampp\htdocs'], ['example.html']);
 // Returns: ['C:/xampp/htdocs/example.html']
 
