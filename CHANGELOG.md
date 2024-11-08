@@ -1,5 +1,8 @@
 # Release Notes
-## [Unreleased](https://github.com/lazervel/path/compare/v9.0.0...v9.1.0)
+## [Unreleased](https://github.com/lazervel/path/compare/v9.1.1...v9.2.0)
+
+## [9.2.0](https://github.com/lazervel/path/compare/v9.1.1...v9.2.0)
+- Fixed bugs `Path::tmp()` that caused [e.g., incorrect output], changes output behaviour. see [CHANGELOG](https://github.com/lazervel/path/compare/v9.1.1...v9.2.0)
 
 ## [9.1.0](https://github.com/lazervel/path/compare/v9.0.0...v9.1.0) - 08 November 2024
 - Added `Path::apply()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).

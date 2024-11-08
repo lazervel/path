@@ -58,12 +58,12 @@ trait PathModel
 
   /**
    * 
-   * @param string $name [required]
+   * @param string $path [required]
    * @return string
    */
-  public static function tmp(string $name) : string
+  public static function tmp(string $path) : string
   {
-    return $name.'\.!!'.'/.!'.\strrev(
+    return \dirname($path).self::sep.'.!!'.self::sep.'.!'.\strrev(
       \strtr(\base64_encode(\random_bytes(3)), '/=', '-!')
     );
   }
