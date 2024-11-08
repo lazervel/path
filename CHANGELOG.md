@@ -1,5 +1,13 @@
 # Release Notes
-## [Unreleased](https://github.com/lazervel/path/compare/v8.2.2...v9.0.0)
+## [Unreleased](https://github.com/lazervel/path/compare/v9.0.0...v9.1.0)
+
+## [9.1.0](https://github.com/lazervel/path/compare/v9.0.0...v9.1.0) - 08 November 2024
+- Added `Path::apply()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
+- Added `Path::real()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
+- Removed Temporarily `Path::callMap()` This method has been temporarily removed due to performance issues. It will be reintroduced in a future version (v9.3.0) after optimizations are completed.
+- Fixed bugs `Path::canonicalize()` that caused [e.g., incorrect output].
+- Fixed bugs `Path::isLocal()` that caused [e.g., incorrect output].
+- Fixed bugs `Path::rootname()` that caused [e.g., incorrect output].
 
 ## [9.0.0](https://github.com/lazervel/path/compare/v8.2.2...v9.0.0) - 08 November 2024
 - [BC BREAK] Since v8.x, Due to significant updates in the library, all previous configurations may no longer work as expected. Users will need to reconfigure their settings to align with the new structure and behavior introduced in this update.

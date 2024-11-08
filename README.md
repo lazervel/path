@@ -60,22 +60,72 @@ require 'vendor/autoload.php';
 
 ## Path::basename($path[, $suffix])
 ```php
+Path::basename('C:/xampp/htdocs/example.html');
+// Returns: 'example.html'
+
+Path::basename('C:/xampp/htdocs/example.html', '.html');
+// Returns: 'example'
+```
+
+```php
+Path::basename('/home/local/user/example.html');
+// Returns: 'example.html'
+
+Path::basename('/home/local/user/example.html', '.html');
+// Returns: 'example'
 ```
 
 ## Path::callMap($method, $args)
 ```php
+
 ```
 
 ## Path::canonicalize($path)
 ```php
+Path::canonicalize('C:/XamPP/HtDocS/DatA/comPoseR.jSon');
+// Returns: 'C:\xampp\htdocs\data\composer.json'
+
+Path::posix::canonicalize('/path/composer.json');
+// Returns: 'G:\path\composer.json'
 ```
 
 ## Path::combine($paths, $names)
 ```php
+Path::combine(['C:/xampp/htdocs'], ['example.html']);
+// Returns: ['C:\xampp\htdocs\example.html']
+
+Path::combine(['C:/xampp/htdocs', '/path'], ['example.html']);
+// Returns: ['C:\xampp\htdocs\example.html', '\path\example.html']
+
+Path::combine(['C:/xampp/htdocs'], ['example.html', 'foo.txt']);
+// Returns: ['C:\xampp\htdocs\example.html', 'C:\xampp\htdocs\foo.txt']
+
+Path::combine(['C:/xampp/htdocs', '/path'], ['example.html', 'foot.txt', '.env']);
+// Returns: ['C:\xampp\htdocs\example.html', 'C:\xampp\htdocs\foot.txt', 'C:\xampp\htdocs\.env', '\path\example.html', '\path\foot.txt', '\path\.env']
+
+/**
+ * For POSIX (Linux/macOs) operating system.
+ */
+Path::posix::combine(['C:\xampp\htdocs'], ['example.html']);
+// Returns: ['C:/xampp/htdocs/example.html']
+
+Path::posix::combine(['C:\xampp\htdocs', '\path'], ['example.html']);
+// Returns: ['C:/xampp/htdocs/example.html', '/path/example.html']
+
+Path::posix::combine(['C:\xampp\htdocs'], ['example.html', 'foo.txt']);
+// Returns: ['C:/xampp/htdocs/example.html', 'C:/xampp/htdocs/foo.txt']
+
+Path::posix::combine(['C:\xampp\htdocs', '\path'], ['example.html', 'foot.txt', '.env']);
+// Returns: ['C:/xampp/htdocs/example.html', 'C:/xampp/htdocs/foot.txt', 'C:/xampp/htdocs/.env', '/path/example.html', '/path/foot.txt', '/path/.env']
 ```
 
 ## Path::checkLength($path)
 ```php
+// Check maximum path length on your system use \PHP_MAXPATHLEN constant.
+Path::checkLength('your-path');
+
+// Returns: if given path of length are valid so return (void) otherwise throwing RTException Error.
+// PHP Fatal error:  Uncaught Path\Exception\RTException: Invalid path because path length exceeds [2048] characters.
 ```
 
 ## Path::delimiter
@@ -88,6 +138,23 @@ require 'vendor/autoload.php';
 
 ## Path::extname($path)
 ```php
+Path::extname('C:/xampp/htdocs/example.html');
+// Returns: '.html'
+
+Path::extname('index.coffee.md');
+// Returns: '.md'
+
+Path::extname('index.');
+// Returns: '.'
+
+Path::extname('index');
+// Returns: ''
+
+Path::extname('.index');
+// Returns: '.index'
+
+Path::extname('C:/xampp/htdocs/example.md');
+// Returns: '.md' 
 ```
 
 ## Path::filename($path)

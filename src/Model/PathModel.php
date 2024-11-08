@@ -24,6 +24,7 @@ namespace Path\Model;
 
 use Path\Exception\RTException;
 use Path\Utils\PathUtils;
+use Path\Win32\Win32;
 use Url\Url;
 
 /**
@@ -123,8 +124,8 @@ trait PathModel
    */
   public static function isLocal(string $path) : bool
   {
-    $absPath = \realpath($path);
-    return $absPath && self::isAbsolute($absPath);
+    $absPath = self::real($path);
+    return $absPath && Win32::isAbsolute($absPath);
   }
 
   /**
@@ -139,16 +140,28 @@ trait PathModel
 
   /**
    * 
-   * @param callable|string $method [required]
-   * @param string[]        $args   [required]
+   * @param callable $method [required]
+   * @param string[] $args   [required]
    * 
    * @return string[]
    */
-  public static function callMap($method, array $args) : array
-  {
-    return \array_map(!\is_callable($method) ?  [self::class, $method] : $method, $args);
-  }
+  // public static function callMap($method, array $args) : array
+  // {
+  //   return \array_map(static function() use ($method, $args) {
+  //     return self::apply($method, ...\func_get_args());
+  //   }, [$args]);
+  // }
 
+  /**
+   * 
+   * @param callable $method [required]
+   * @param string[] $args   [required]
+   */
+  public static function apply($method, array $args)
+  {
+    $fn = !\is_callable($method) ?  [self::class, $method] : $method;
+    return \call_user_func_array($fn, $args);
+  }
 
   /**
    * 
@@ -157,8 +170,8 @@ trait PathModel
    */
   public static function canonicalize(string $path)
   {
-    $absPath = self::resolve($path);
-    return self::isLocal($absPath) ? $absPath : false;
+    $absPath = self::normalize($path);
+    return self::isLocal($absPath) ? self::real($absPath) : false;
   }
 
   /**
@@ -168,7 +181,8 @@ trait PathModel
    */
   public static function extname(string $path) : string
   {
-    return self::info($path)->extension;
+    $src = \explode('.', $path);
+    return \count($src) > 1 ? ('.'.@end($src)) : '';
   }
 
   /**
@@ -199,6 +213,16 @@ trait PathModel
   public static function resolve(string ...$paths) : string
   {
     return self::normalize(self::doResolve($paths));
+  }
+
+  /**
+   * 
+   * @param string $path [required]
+   * @return string|false
+   */
+  public static function real(string $path)
+  {
+    return \realpath($path);
   }
 
   /**
