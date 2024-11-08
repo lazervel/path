@@ -479,7 +479,7 @@ trait PathUtils
    * @return string The modified string without the prefix,
    * or the original string if no match.
    */
-  public static function prefix(string $prefix, string $data, bool $addPrefix = true, bool $allMatched = false) : string
+  private static function prefix(string $prefix, string $data, bool $addPrefix = true, bool $allMatched = false) : string
   {
     $cond = $allMatched ? true : $data !== $prefix;
     $prefixed = $cond && \substr($data, 0, \strlen($prefix)) === $prefix ? \substr($data, \strlen($prefix)) : $data;

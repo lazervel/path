@@ -263,7 +263,15 @@ trait PathModel
     return \basename($path, $suffix);
   }
 
-  
+  /**
+   * 
+   * @param string|string[] $group [required]
+   * @param string|string[] $paths [required]
+   */
+  public static function group($group, $paths)
+  {
+
+  }
 
   /**
    * 
@@ -282,6 +290,7 @@ trait PathModel
    */
   public static function toNamespcedPath(string $path) : string
   {
+    // Skip converting namespaced path returns simple path.
     if (self::$isPosix) {
       return $path;
     }
