@@ -150,7 +150,7 @@ trait PathUtils
    * @param string $path [required]
    * @return bool Returns true if the path is a valid network path, false otherwise.
    */
-  private static function isURIPath(string $path) : bool
+  public static function isURIPath(string $path) : bool
   {
     return !!(self::match(self::$MULTI_SEP, $path, true)[1] ?? false);
   }
@@ -214,6 +214,7 @@ trait PathUtils
       return false;
     };
 
+    // Got through the foreach, for normalizing the path
     foreach($files as $file) {
       if ($file === self::$parent) {
         \array_pop($normalized) == null && ($upDirs[] = $file);
@@ -222,10 +223,16 @@ trait PathUtils
       }
     }
 
+    // Add suffix separator of network uri for both platform.
+    if (self::isURIPath($root)) {
+      $root = self::suffix($root, self::sep, true).self::sep;
+    }
+
+    // Sotred parents or current directory identifiers LIKE '../' './'
     if ($notAbsPath) {
       if (\count($upDirs) > 0) {
         \array_unshift($normalized, ...$upDirs);
-      } else if (!$hasContains($normalized) && $endPart == null) {
+      } else if (!$hasContains($normalized) && $endPart == null && !$root) {
         \array_unshift($normalized, self::$curdir);
       }
     }
@@ -338,10 +345,11 @@ trait PathUtils
 
     for(; $i >= 0; $i--) {
       $path = $paths[$i];
+
       if (!self::verify($root, $path)) {
         continue;
       }
-
+      
       \array_unshift($resolves, $path);
       if ($path && $path[0] === self::sep) {
         break;
@@ -372,7 +380,8 @@ trait PathUtils
   {
     if ($root != null) {
       $first = ($results[0] ?? '');
-      if ($first && $first[0] !== $root) {
+      $root = isset($results[0]) && !$results[0] ? self::suffix($root, self::sep, true) : $root;
+      if (($first[0] ?? $first) !== $root) {
         $results[0] = $root.$first;
       }
     }
@@ -419,8 +428,9 @@ trait PathUtils
     $targetDrive  = self::getdrive($target);
     
     // Removes Network Path URI of $matcher path, If given $matcher is Network Path.
-    if ($matcherDrive && self::isURIPath($matcherDrive)) {
-      $matcher = self::sep.\substr($matcher, \strlen($target));
+    // And return always true skipping the  drive verification.
+    if (($isURI = $matcherDrive && self::isURIPath($matcherDrive))) {
+      $matcher = \substr($matcher, \strlen($target));
     }
 
     // Let's start the drive verification or none-drive $matcherDrive verification.!
@@ -428,7 +438,7 @@ trait PathUtils
     !$matcherDrive;
 
     // Removes drive of $matcher path, If $target drive and $matcher drive are matched.
-    if ($isVerified && $matcherDrive) {
+    if ($isVerified && $matcherDrive && !$isURI) {
       $matcher = \substr($matcher, \strlen($target));
     }
 
@@ -469,7 +479,7 @@ trait PathUtils
    * @return string The modified string without the prefix,
    * or the original string if no match.
    */
-  private static function prefix(string $prefix, string $data, bool $addPrefix = true, bool $allMatched = false) : string
+  public static function prefix(string $prefix, string $data, bool $addPrefix = true, bool $allMatched = false) : string
   {
     $cond = $allMatched ? true : $data !== $prefix;
     $prefixed = $cond && \substr($data, 0, \strlen($prefix)) === $prefix ? \substr($data, \strlen($prefix)) : $data;

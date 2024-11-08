@@ -263,6 +263,8 @@ trait PathModel
     return \basename($path, $suffix);
   }
 
+  
+
   /**
    * 
    * @param string $url [required]
@@ -271,6 +273,22 @@ trait PathModel
   public static function UrlToPath(string $url) : string
   {
     return self::resolve((new Url($url))->pathname);
+  }
+
+  /**
+   * 
+   * @param string $path [required]
+   * @return string
+   */
+  public static function toNamespcedPath(string $path) : string
+  {
+    if (self::$isPosix) {
+      return $path;
+    }
+
+    $path = self::resolve($path);
+    $rel = '\\\\?\\';
+    return self::isURIPath($path) ? \str_replace(self::regsep, $rel.'UNC\\', $path) : $rel.$path;
   }
 
   /**

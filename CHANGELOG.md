@@ -1,5 +1,20 @@
 # Release Notes
-## [Unreleased](https://github.com/lazervel/path/compare/v7.3.0...v8.0.0)
+## [Unreleased](https://github.com/lazervel/path/compare/v8.2.1...v9.0.0)
+
+## [9.0.0](https://github.com/lazervel/path/compare/v8.2.1...v9.0.0) - 08 November 2024
+- [BC BREAK] Since v8.x, Due to significant updates in the library, all previous configurations may no longer work as expected. Users will need to reconfigure their settings to align with the new structure and behavior introduced in this update.
+- Review the updated documentation for `Path` to understand the new behavior.
+- Ensure that any calls to these methods are updated to accommodate these changes.
+- Affected `Path::canonicalize()` of output behaviour.
+- Affected `Path::resolve()` of output behaviour.
+- Affected `Path::normalize()` of output behaviour.
+- Affected `Path::optimize()` of output behaviour.
+- Affected `Path::join()` of output behaviour.
+- Affected `Path::relative()` of output behaviour.
+- Affected `Path::UrlToPath()` of output behaviour.
+- Affected `Path::toNamespcedPath()`
+
+- Added `Path::toNamespcedPath()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
 
 ## [8.2.0](https://github.com/lazervel/path/releases/tag/v8.2.0) - 04 November 2024
 - Added `Path::pathToURL()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
