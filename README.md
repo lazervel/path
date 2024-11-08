@@ -60,13 +60,18 @@ require 'vendor/autoload.php';
 ```
 
 ## Path::basename($path[, $suffix])
+
+For example, on POSIX:
+
 ```php
-Path::basename('C:/xampp/htdocs/example.html');
+Path::basename('C:\\xampp\\htdocs\\example.html');
 // Returns: 'example.html'
 
-Path::basename('C:/xampp/htdocs/example.html', '.html');
+Path::basename('C:\\xampp\\htdocs\\example.html', '.html');
 // Returns: 'example'
 ```
+
+On Windows:
 
 ```php
 Path::basename('/home/local/user/example.html');
@@ -82,12 +87,19 @@ Path::basename('/home/local/user/example.html', '.html');
 ```
 
 ## Path::canonicalize($path)
-```php
-Path::canonicalize('C:/XamPP/HtDocS/DatA/comPoseR.jSon');
-// Returns: 'C:\xampp\htdocs\data\composer.json'
 
-Path::posix::canonicalize('/path/composer.json');
-// Returns: 'G:\path\composer.json'
+For example, on POSIX:
+
+```php
+Path::canonicalize('C:\\XamPP\\HtDocS\\DatA\\comPoseR.jSon');
+// Returns: 'C:\\xampp\\htdocs\\data\\composer.json'
+```
+
+On Windows:
+
+```php
+Path::canonicalize('/path/composer.json');
+// Returns: 'G:\\path\\composer.json'
 ```
 
 ## Path::combine($paths, $names)
@@ -95,33 +107,33 @@ Path::posix::canonicalize('/path/composer.json');
 For example, on POSIX:
 
 ```php
-Path::combine(['C:/xampp/htdocs'], ['example.html', 'foo.txt']);
-// Returns: ['C:\xampp\htdocs\example.html', 'C:\xampp\htdocs\foo.txt']
+Path::combine(['/xampp/htdocs'], ['example.html', 'foo.txt']);
+// Returns: ['/xampp/htdocs/example.html', '/xampp/htdocs/foo.txt']
 
-Path::combine(['C:/xampp/htdocs'], ['example.html']);
-// Returns: ['C:\xampp\htdocs\example.html']
+Path::combine(['/xampp/htdocs'], ['example.html']);
+// Returns: ['/xampp/htdocs/example.html']
 
-Path::combine(['C:/xampp/htdocs', '/path'], ['example.html']);
-// Returns: ['C:\xampp\htdocs\example.html', '\path\example.html']
+Path::combine(['/xampp/htdocs', '/path'], ['example.html']);
+// Returns: ['/xampp/htdocs/example.html', '/path/example.html']
 
-Path::combine(['C:/xampp/htdocs', '/path'], ['example.html', 'foot.txt', '.env']);
-// Returns: ['C:\xampp\htdocs\example.html', 'C:\xampp\htdocs\foot.txt', 'C:\xampp\htdocs\.env', '\path\example.html', '\path\foot.txt', '\path\.env']
+Path::combine(['/xampp/htdocs', '/path'], ['example.html', 'foot.txt', '.env']);
+// Returns: ['/xampp/htdocs/example.html', '/xampp/htdocs/foot.txt', '/xampp/htdocs/.env', '\path\example.html', '\path\foot.txt', '\path\.env']
 ```
 
 On Windows:
 
 ```php
-Path::posix::combine(['C:\xampp\htdocs'], ['example.html', 'foo.txt']);
-// Returns: ['C:/xampp/htdocs/example.html', 'C:/xampp/htdocs/foo.txt']
+Path::combine(['C:\\xampp\\htdocs'], ['example.html', 'foo.txt']);
+// Returns: ['C:\\xampp\\htdocs\\example.html', 'C:\\xampp\\htdocs\\foo.txt']
 
-Path::posix::combine(['C:\xampp\htdocs'], ['example.html']);
-// Returns: ['C:/xampp/htdocs/example.html']
+Path::combine(['C:\\xampp\\htdocs'], ['example.html']);
+// Returns: ['C:\\xampp\\htdocs\\example.html']
 
-Path::posix::combine(['C:\xampp\htdocs', '\path'], ['example.html']);
-// Returns: ['C:/xampp/htdocs/example.html', '/path/example.html']
+Path::combine(['C:\\xampp\\htdocs', '\\path'], ['example.html']);
+// Returns: ['C:\\xampp\\htdocs\\example.html', '\\path\\example.html']
 
-Path::posix::combine(['C:\xampp\htdocs', '\path'], ['example.html', 'foot.txt', '.env']);
-// Returns: ['C:/xampp/htdocs/example.html', 'C:/xampp/htdocs/foot.txt', 'C:/xampp/htdocs/.env', '/path/example.html', '/path/foot.txt', '/path/.env']
+Path::combine(['C:\\xampp\\htdocs', '\\path'], ['example.html', 'foot.txt', '.env']);
+// Returns: ['C:\\xampp\\htdocs\\example.html', 'C:\\xampp\\htdocs\\foot.txt', 'C:\\xampp\\htdocs\\.env', '\\path\\example.html', '\\path\\foot.txt', '\\path\\.env']
 ```
 
 ## Path::checkLength($path)
@@ -168,7 +180,7 @@ explode(Path::delimiter, getenv('PATH'));
 
 ## Path::extname($path)
 ```php
-Path::extname('C:/xampp/htdocs/example.html');
+Path::extname('C:\\xampp\\htdocs\\example.html');
 // Returns: '.html'
 
 Path::extname('index.coffee.md');
@@ -183,12 +195,26 @@ Path::extname('index');
 Path::extname('.index');
 // Returns: '.index'
 
-Path::extname('C:/xampp/htdocs/example.md');
+Path::extname('C:\\xampp\\htdocs\\example.md');
 // Returns: '.md' 
 ```
 
 ## Path::filename($path)
 ```php
+Path::filename('/foo/bar/baz/asdf/quux.html');
+// Returns: 'quux.html'
+
+Path::filename('example.txt');
+
+Path::filename('/');
+// Returns: ''
+// Returns: 'example.txt'
+
+Path::filename('example');
+// Returns: 'example'
+
+Path::filename('C:\\path\\dir\\file.txt');
+// Returns: 'file.txt'
 ```
 
 ## Path::format($pathObject)
@@ -255,9 +281,9 @@ Path::getcwd(); // Returns: /xampp/htdocs
 On Windows:
 
 ```php
-// If the current working directory is C:/xampp/htdocs,
+// If the current working directory is C:\\xampp\\htdocs,
 // returns with drive LIKE (eg: C:,D:,F: etc.)
-Path::getcwd(); // Returns: C:/xampp/htdocs
+Path::getcwd(); // Returns: C:\\xampp\\htdocs
 ```
 
 ## Path::info()
@@ -278,7 +304,7 @@ Path::info('/home/local/user/example.html');
 On Windows:
 
 ```php
-Path::info('C:/xampp/htdocs/path/Path.php');
+Path::info('C:\\xampp\\htdocs\\path\\Path.php');
 // Returns: stdClass Object (
 //   [dirname] => C:/xampp/htdocs/path
 //   [basename] => Path.php
@@ -450,14 +476,14 @@ On Windows:
 
 ```php
 Path::resolve('/foo/bar', './baz');
-// Returns: 'G:\foo\bar\baz'
+// Returns: 'G:\\foo\\bar\\baz'
 
 Path::resolve('/foo/bar', '/tmp/file/');
-// Returns: 'G:\tmp\file'
+// Returns: 'G:\\tmp\\file'
 
 Path::resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
-// If the current working directory is C:\xampp\htdocs/,
-// this returns 'C:\xampp\htdocs\wwwroot\static_files\gif\image.gif'
+// If the current working directory is C:\\xampp\\htdocs/,
+// this returns 'C:\\xampp\\htdocs\\wwwroot\\static_files\\gif\\image.gif'
 ```
 
 ## Path::rootname($path)
@@ -499,9 +525,9 @@ On Windows:
 ```php
 // Path::tmp suffix random tmp name in given path value.
 Path::tmp('foot\\bar\\baz');
-// Returns: 'foot\bar\.!!\.!RBDZ'
-// Returns: 'foot\bar\.!!\.!NPia'
-// Returns: 'foot\bar\.!!\.!0Kbx'
+// Returns: 'foot\\bar\\.!!\\.!RBDZ'
+// Returns: 'foot\\bar\\.!!\\.!NPia'
+// Returns: 'foot\\bar\\.!!\\.!0Kbx'
 ```
 
 ## Path::toNamespacedPath($path)
@@ -514,13 +540,13 @@ For example, on POSIX:
 
 ```php
 Path::UrlToPath('https://www.example.com/server/auth/client?id=1');
-// Returns: 'G:\server\auth\client'
+// Returns: 'G:\\server\\auth\\client'
 
 Path::UrlToPath('https://www.example.com/server/auth/client');
-// Returns: 'G:\server\auth\client'
+// Returns: 'G:\\server\\auth\\client'
 
 Path::UrlToPath('https://www.example.com/server/auth/client?id=1#root');
-// Returns: 'G:\server\auth\client'
+// Returns: 'G:\\server\\auth\\client'
 ```
 
 On Windows:
