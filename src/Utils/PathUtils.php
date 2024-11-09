@@ -86,7 +86,7 @@ trait PathUtils
   private static $curdir = '.';
 
   private static $ROOT = '/^(?:(?:['.self::regsep.']{2})[^'.self::regsep.']+['.self::regsep.']+[^'
-  .self::regsep.']+['.self::regsep.']?|(?:[A-Z]:)*['.self::regsep.']?)|/';
+  .self::regsep.']+['.self::regsep.']?|(?:^[A-Z]:)*['.self::regsep.']?)|/';
 
   /**
    * !Important: For internal use only.
@@ -113,7 +113,7 @@ trait PathUtils
    * This method will override or replace seprators as requirements of needed.
    * 
    * @param string $path        [required]
-   * @param bool   $overrideAll [optional]
+   * @param bool   $overrideAll [optional] auto-separate
    * 
    * @return array An array of strings created by splitting the original string.
    */
@@ -232,7 +232,7 @@ trait PathUtils
     if ($notAbsPath) {
       if (\count($upDirs) > 0) {
         \array_unshift($normalized, ...$upDirs);
-      } else if (!$hasContains($normalized) && $endPart == null && !$root) {
+      } else if (!$hasContains($normalized) && $endPart == null && !\str_ends_with($root, self::sep)) {
         \array_unshift($normalized, self::$curdir);
       }
     }
@@ -356,9 +356,8 @@ trait PathUtils
       }
     }
 
-    return self::suffix(
-      self::final(self::suffix($root, self::sep, true).self::sep, $resolves),
-      self::sep
+    return self::final(
+      self::suffix($root, self::sep, true).self::sep, $resolves, true
     );
   }
 
@@ -373,20 +372,23 @@ trait PathUtils
    * 
    * @param string|null $root    [required]
    * @param array       $results [required]
+   * @param bool        $rls     [optional]
    * 
    * @return string final path escaped and join $normalize with $root directory.
    */
-  private static function final(?string $root, array $results) : string
+  private static function final(?string $root, array $results, bool $rls = false) : string
   {
+    $path = self::_join($results);
     if ($root != null) {
-      $first = ($results[0] ?? '');
-      $root = isset($results[0]) && !$results[0] ? self::suffix($root, self::sep, true) : $root;
-      if (($first[0] ?? $first) !== $root) {
-        $results[0] = $root.$first;
-      }
+      $path = $root.self::prefix(self::sep, $path, false);
     }
 
-    return \preg_replace(self::$fCurDir, '', self::escape(self::_join($results)));
+    // Dealing for Path::resolve removing last separator of path.
+    if ($rls && $path !== $root) {
+      $path = self::suffix($path, self::sep, true);
+    }
+
+    return \preg_replace(self::$fCurDir, '', self::escape($path));
   }
 
   /**

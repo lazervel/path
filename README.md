@@ -26,6 +26,7 @@ or add it by hand to your `composer.json` file.
 - [Path::basename($path[, $suffix])](#pathbasenamepath-suffix)
 - [Path::callMap($method, $args)](#pathcallmapmethod-args)
 - [Path::canonicalize($path)](#pathcanonicalizepath)
+- [Path::changeExt($path, $newExt)]()
 - [Path::combine($paths, $names)](#pathcombinepaths-names)
 - [Path::checkLength($path)](#pathchecklengthpath)
 - [Path::delimiter](#pathdelimiter)
@@ -34,11 +35,13 @@ or add it by hand to your `composer.json` file.
 - [Path::filename($path)](#pathfilenamepath)
 - [Path::format($pathObject)](#pathformatpathobject)
 - [Path::getcwd()](#pathgetcwd)
+- [Path::hasExt($path)]()
 - [Path::info()](#pathinfo)
 - [Path::isAbsolute($path)](#pathisabsolutepath)
 - [Path::isLocal($path)](#pathislocalpath)
 - [Path::isURIPath($path)](#pathisuripathpath)
 - [Path::join([...$paths])](#pathjoinpaths)
+- [Path::localBase($paths)]()
 - [Path::normalize($path)](#pathnormalizepath)
 - [Path::optimize($path)](#pathoptimizepath)
 - [Path::parse($path)](#pathparsepath)
@@ -46,6 +49,7 @@ or add it by hand to your `composer.json` file.
 - [Path::pathToURL($path, $origin[, ?$query, ?$hash])](#pathpathtourlpath-origin-query-hash)
 - [Path::posix](#pathposix)
 - [Path::relative($from, $to)](#pathrelativefrom-to)
+- [Path::removeExt($path)]()
 - [Path::resolve($path)](#pathresolvepath)
 - [Path::rootname($path)](#pathrootnamepath)
 - [Path::sep](#pathsep)
@@ -83,7 +87,7 @@ Path::basename('/home/local/user/example.html', '.html');
 
 ## Path::callMap($method, $args)
 ```php
-
+// Temporary Unavailable
 ```
 
 ## Path::canonicalize($path)
@@ -100,6 +104,15 @@ On Windows:
 ```php
 Path::canonicalize('/path/composer.json');
 // Returns: 'G:\\path\\composer.json'
+```
+
+## Path::changeExt($path, $newExt)
+```php
+Path::changeExt('/foo/bar/baz/asdf/quux.html', '.php');
+// Returns: '/foo/bar/baz/asdf/quux.php'
+
+Path::changeExt('/foo/bar/baz/asdf/vector.gif', 'svg');
+// Returns: '/foo/bar/baz/asdf/vector.svg'
 ```
 
 ## Path::combine($paths, $names)
@@ -286,6 +299,19 @@ On Windows:
 Path::getcwd(); // Returns: C:\\xampp\\htdocs
 ```
 
+## Path::hasExt($path)
+```php
+Path::hasExt('/foo/bar/baz/asdf/vector.png', ['.gif', '.jpg', '.png']); // Returns: true
+Path::hasExt('/foo/bar/baz/asdf/vector.gif', '.gif');                   // Returns: true
+Path::hasExt('/foo/bar/baz/asdf/vector.gif', 'gif');                    // Returns: true
+Path::hasExt('/foo/bar/baz/asdf/vector.gif', ['gif', 'jpeg', 'png']);   // Returns: true
+
+Path::hasExt('/foo/bar/baz/asdf/vector.pdf', ['.gif', '.jpg', '.png']); // Returns: false
+Path::hasExt('/foo/bar/baz/asdf/vector.gif', '.svg');                   // Returns: false
+Path::hasExt('/foo/bar/baz/asdf/vector.gif', 'png');                    // Returns: false
+Path::hasExt('/foo/bar/baz/asdf/vector.gif', ['svg', 'jpeg', 'png']);   // Returns: false
+```
+
 ## Path::info()
 
 For example, on POSIX:
@@ -363,6 +389,11 @@ Path::join('foo', [], 'bar');
 // Throws TypeError: Path\Path::join(): Argument #2 must be of type string, array given.
 ```
 
+## Path::localBase($paths)
+```php
+// Temporary Unavailable
+```
+
 ## Path::normalize($path)
 
 For example, on POSIX:
@@ -395,12 +426,57 @@ Path::win32::normalize('C:////temp\\\\/\\/\\/foo/bar');
 ```
 
 ## Path::pathname($path)
+
+For example, on POSIX:
+
 ```php
+Path::pathname('//var/www/httpdocs/config/config.yml');
+// Returns: '/var/www/httpdocs/config/config.yml'
+
+Path::pathname('C:////temp\\\\/\\/\\/foo/bar');
+// Returns: 'C:/temp\foo/bar'
+
+Path::pathname('/');
+// Returns: '/'
+
+Path::pathname('/var/www/httpdocs/config/config.yml');
+// Returns: '/var/www/httpdocs/config/config.yml'
 ```
+
+On Windows:
+
+```php
+// Handle Network Path, Here network path are '\\\\var\\www'
+Path::pathname('\\\\var\\www\\httpdocs\\config\\config.yml');
+// Returns: '\\httpdocs\\config\\config.yml'
+
+Path::pathname('C:////temp\\\\/\\/\\/foo/bar');
+// Returns: '\\temp\\foo\\bar'
+
+Path::pathname('\\var\\www\\httpdocs\\config\\config.yml');
+// Returns: '\\var\\www\\httpdocs\\config\\config.yml'
+
+Path::pathname('\\\\var\\www\\');
+// Returns: '\\'
+
+Path::pathname('C:');
+// Returns: ''
+
+Path::pathname('C:\\');
+// Returns: '\\'
+
+Path::pathname('\\\\var\\www');
+// Returns: ''
+
+Path::pathname('G:var\\www\\httpdocs\\config\\config.yml');
+// Returns: 'var\\www\\httpdocs\\config\\config.yml'
+```
+
+Since Windows recognizes multiple path separators, both separators will be replaced by instances of the Windows preferred separator (`\`):
 
 ## Path::pathToURL($path, $origin[, ?$query, ?$hash])
 
-**Notice:** Don't use syntax `Path::win32::pathToURL()` or `Path::posix::pathToURL()`, This a common bugs. but don't worry we fix this bugs to next expected version `[v10.0.0]`.
+**Notice:** Don't use syntax `Path::win32::pathToURL()` or `Path::posix::pathToURL()`, This a common bugs. but don't worry we fix this bugs to next expected version `[v10.2.0]`.
 
 For example, on POSIX:
 
@@ -456,6 +532,24 @@ Path::relative('C:\\orandea\\test\\aaa', 'C:\\orandea\\impl\\bbb');
 // Returns: '..\\..\\impl\\bbb'
 ```
 
+## Path::removeExt($path)
+```php
+Path::removeExt('/var/www/web.php');
+// Returns: '/var/www/web'
+
+Path::removeExt('.env.local');
+// Returns: '.env'
+
+Path::removeExt('.html');
+// Returns: '' bugs detected
+
+Path::removeExt('file.txt');
+// Returns 'file'
+
+Path::removeExt('G:/path/.github');
+// Returns: 'G:/path/' bugs detected
+```
+
 ## Path::resolve($path)
 
 For example, on POSIX:
@@ -487,7 +581,43 @@ Path::resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
 ```
 
 ## Path::rootname($path)
+
+For example, on POSIX:
+
 ```php
+Path::rootname('C:\\xampp\\htdocs\\');
+// Returns: ''
+
+Path::rootname('/var/ww/httpdocs');
+// Returns: '/'
+
+Path::rootname('C:\\');
+// Returns: ''
+
+Path::rootname('G:');
+// Returns: ''
+
+Path::rootname('//var/www/httpdocs');
+// Returns: '/'
+```
+
+On Windows:
+
+```php
+Path::rootname('C:\\xampp\\htdocs\\');
+// Returns: 'C:\\'
+
+Path::rootname('/var/ww/httpdocs');
+// Returns: '\\'
+
+Path::rootname('C:\\');
+// Returns: 'C:\\'
+
+Path::rootname('G:');
+// Returns: 'G:'
+
+Path::rootname('//var/www/httpdocs');
+// Returns: '\\\\var\\www\\'
 ```
 
 ## Path::sep

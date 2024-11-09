@@ -181,7 +181,7 @@ trait PathModel
    */
   public static function extname(string $path) : string
   {
-    $src = \explode('.', $path);
+    $src = \explode('.', self::basename($path));
     return \count($src) > 1 ? ('.'.@end($src)) : '';
   }
 
@@ -207,6 +207,28 @@ trait PathModel
 
   /**
    * 
+   * @param string          $path       [required]
+   * @param string|string[] $extensions [required]
+   * @param bool            $caseI      [optional] case-insensitive
+   * @return string
+   */
+  public static function hasExt(string $path, $extensions, bool $caseI = false) : bool
+  {
+    // Extracting extension from given path with change case according to $caseI
+    $pathExtension = self::extname($path);
+    $pathExtension = $caseI ? \strtolower($pathExtension) : $pathExtension;
+
+    foreach((array) $extensions as $extension) {
+      $modExtension = $caseI ? \strtolower($extension) : $extension;
+      if ($pathExtension === $modExtension || $pathExtension === ".$modExtension") {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * 
    * @param string ...$paths [required]
    * @return string
    */
@@ -218,11 +240,46 @@ trait PathModel
   /**
    * 
    * @param string $path [required]
+   * @return string
+   */
+  public static function removeExt(string $path) : string
+  {
+    return self::suffix($path, self::extname($path), true);
+  }
+
+  /**
+   * 
+   * @param string $path [required]
    * @return string|false
    */
   public static function real(string $path)
   {
     return \realpath($path);
+  }
+
+  /**
+   * 
+   * @param string[] $paths [required]
+   * @return string
+   */
+  public static function localBase(array $paths) : string
+  {
+    
+  }
+
+   /**
+   * 
+   * @param string $path   [required]
+   * @param string $newExt [required]
+   * @return string
+   */
+  public static function changeExt(string $path, $newExt) : string
+  {
+    if (!self::hasExt($path, self::extname($path))) {
+      return $path;
+    }
+
+    return self::removeExt($path) . self::prefix('.', $newExt);
   }
 
   /**

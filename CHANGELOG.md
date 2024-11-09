@@ -1,5 +1,23 @@
 # Release Notes
-## [Unreleased](https://github.com/lazervel/path/compare/v9.1.1...v9.2.0)
+## [Unreleased](https://github.com/lazervel/path/compare/v9.2.0...v10.0.0)
+
+## [10.0.0](https://github.com/lazervel/path/compare/v9.2.0...v10.0.0) - 15 November 2024
+- [BC BREAK] Since v8.x, Due to significant updates in the library, all previous configurations may no longer work as expected. Users will need to reconfigure their settings to align with the new structure and behavior introduced in this update.
+- Review the updated documentation for `Path` to understand the new behavior.
+- Ensure that any calls to these methods are updated to accommodate these changes.
+- Affected `Path::canonicalize()` of output behaviour.
+- Affected `Path::resolve()` of output behaviour.
+- Affected `Path::normalize()` of output behaviour.
+- Affected `Path::optimize()` of output behaviour.
+- Affected `Path::join()` of output behaviour.
+- Affected `Path::relative()` of output behaviour.
+- Affected `Path::UrlToPath()` of output behaviour.
+- Affected `Path::toNamespcedPath()` of output behaviour.
+- Added `Path::toNamespcedPath()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
+- Added `Path::removeExt()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
+- Added `Path::hasExt()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
+- Added `Path::changeExt()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
+- Added `Path::localBase()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
 
 ## [9.2.0](https://github.com/lazervel/path/compare/v9.1.1...v9.2.0) - 09 November 2024
 - Fixed bugs `Path::tmp()` that caused [e.g., incorrect output], changes output behaviour. see [CHANGELOG](https://github.com/lazervel/path/compare/v9.1.1...v9.2.0)
@@ -23,7 +41,7 @@
 - Affected `Path::join()` of output behaviour.
 - Affected `Path::relative()` of output behaviour.
 - Affected `Path::UrlToPath()` of output behaviour.
-- Affected `Path::toNamespcedPath()`
+- Affected `Path::toNamespcedPath()` of output behaviour.
 - Added `Path::toNamespcedPath()` method in PHP `path` develope by [@shahzadamodassir](https://github.com/shahzadamodassir).
 
 ## [8.2.0](https://github.com/lazervel/path/releases/tag/v8.2.0) - 04 November 2024
