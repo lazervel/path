@@ -22,7 +22,7 @@ composer require filesys/path
 
 or add it by hand to your `composer.json` file.
 
-## PHP Path of Features
+## The Features of PHP Path
 - [Path::basename($path[, $suffix])](#pathbasenamepath-suffix)
 - [Path::callMap($method, $args)](#pathcallmapmethod-args)
 - [Path::canonicalize($path)](#pathcanonicalizepath)
