@@ -697,3 +697,6 @@ Path::UrlToPath('https://www.example.com/server/auth/client?id=1#root');
 The `Path::win32` property provides access to Windows specific implementations of the `Path` methods.
 
 The API is accessible via `Path\Path::win32` or `Path\Win32\Win32::class`.
+
+## Resources
+- [Report issue](https://github.com/lazervel/promise/issues) and [send Pull Request](https://github.com/lazervel/promise/pulls) in the [main Lazervel repository](https://github.com/lazervel/promise)
