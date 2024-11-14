@@ -699,4 +699,4 @@ The `Path::win32` property provides access to Windows specific implementations o
 The API is accessible via `Path\Path::win32` or `Path\Win32\Win32::class`.
 
 ## Resources
-- [Report issue](https://github.com/lazervel/promise/issues) and [send Pull Request](https://github.com/lazervel/promise/pulls) in the [main Lazervel repository](https://github.com/lazervel/promise)
+- [Report issue](https://github.com/lazervel/path/issues) and [send Pull Request](https://github.com/lazervel/path/pulls) in the [main Lazervel repository](https://github.com/lazervel/path)
