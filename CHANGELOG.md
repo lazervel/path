@@ -2,7 +2,7 @@
 ## [Unreleased](https://github.com/lazervel/path/compare/v1.0.0...v1.0.0)
 
 ## [v1.0.0](https://github.com/lazervel/path/compare/v1.0.0...v1.0.0) - 15 November 2024
-## What's Changed
+### What's Changed
 - Merge pull request #1 from lazervel/main by @shahzadiafsu in https://github.com/lazervel/path/pull/3
 - Update CONTRIBUTING.md by @shahzadiafsu in https://github.com/lazervel/path/pull/2
 - new version published by @shahzadamodassir in https://github.com/lazervel/path/pull/4
@@ -21,7 +21,7 @@
 - Update README.md by @authmodassir in https://github.com/lazervel/path/pull/24
 - Update README.md by @shahilsx in https://github.com/lazervel/path/pull/25
 
-## New Contributors
+### New Contributors
 - @shahzadiafsu made their first contribution in https://github.com/lazervel/path/pull/3
 - @shahzadamodassir made their first contribution in https://github.com/lazervel/path/pull/4
 - @sidraham made their first contribution in https://github.com/lazervel/path/pull/7
