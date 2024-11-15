@@ -274,6 +274,23 @@ trait PathUtils
   {
     $dirname = \dirname($path, $levels);
     $lastsep = \substr($path, \strlen($dirname), 1);
+
+    // Returns current directory '.' if $dirname is eq to null
+    if ($dirname == null) {
+      return self::$current;
+    }
+
+    // Handle: for posix operating system (Linux, MacOs)
+    if (($posix = self::$isPosix)) {
+      if (self::escape($path, false) === self::$togglesep) {
+        return self::$current;
+      } elseif ($lastsep === self::$togglesep) {
+        return self::dirname($dirname, $suffix, $levels);
+      }
+    }
+
+    if ($posix && $dirname === self::$togglesep) return self::sep;
+    return self::suffix($dirname, $suffix);
   }
 
   /**

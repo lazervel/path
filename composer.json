@@ -4,6 +4,7 @@
   "type": "library",
   "keywords": ["path", "filesys", "fs", "filesystem"],
   "license": "MIT",
+  "homepage": "https://github.com/lazervel",
   "autoload": {
     "psr-4": {
       "Path\\": "src/"
@@ -16,7 +17,7 @@
   "authors": [
     {
       "name": "Shahzada Modassir",
-      "email": "codingmodassir@gmail.com",
+      "email": "shahzadamodassir@gmail.com",
       "homepage": "https://github.com/shahzadamodassir"
     }
   ],

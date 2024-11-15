@@ -12,7 +12,7 @@ PHP Path Help with handling or manipulating file and directory path.
 <a href="https://github.com/lazervel/path/releases"><img src="https://img.shields.io/github/release/lazervel/path.svg?style=flat-square" alt="Latest Version"></img></a>
 </p>
 
-## Installation
+## Composer Installation
 
 Installation is super-easy via [Composer](https://getcomposer.org)
 
@@ -24,7 +24,6 @@ or add it by hand to your `composer.json` file.
 
 ## The Features of PHP Path
 - [Path::basename($path[, $suffix])](#pathbasenamepath-suffix)
-- [Path::callMap($method, $args)](#pathcallmapmethod-args)
 - [Path::canonicalize($path)](#pathcanonicalizepath)
 - [Path::changeExt($path, $newExt)]()
 - [Path::combine($paths, $names)](#pathcombinepaths-names)
@@ -83,11 +82,6 @@ Path::basename('/home/local/user/example.html');
 
 Path::basename('/home/local/user/example.html', '.html');
 // Returns: 'example'
-```
-
-## Path::callMap($method, $args)
-```php
-// Temporary Unavailable
 ```
 
 ## Path::canonicalize($path)
@@ -188,7 +182,22 @@ explode(Path::delimiter, getenv('PATH'));
 ```
 
 ## Path::dirname($path[, $suffix, $levels])
+
+For example, on POSIX:
+
 ```php
+Path::dirname('/foo/bar/baz/asdf/quux\\abcd\\xyz');
+// Returns: '/foo/bar/baz/asdf'
+```
+
+On Windows:
+
+```php
+Path::dirname('/foo/bar/baz/asdf/quux');
+// Returns: '/foo/bar/baz/asdf'
+
+Path::dirname('/foo/bar/baz/asdf/quux\\abcd\\xyz');
+// Returns: '/foo/bar/baz/asdf/quux\abcd'
 ```
 
 ## Path::extname($path)
@@ -422,7 +431,53 @@ Path::win32::normalize('C:////temp\\\\/\\/\\/foo/bar');
 ```
 
 ## Path::parse($path)
+
+For example, on POSIX:
+
 ```php
+Path::parse('/home/user/dir/file.txt');
+// Returns:
+// [
+//   'root' => '/',
+//   'dir' => '/home/user/dir',
+//   'base' => 'file.txt',
+//   'ext' => '.txt',
+//   'name' => 'file'
+// ]
+```
+
+```
+┌─────────────────────┬────────────┐
+│          dir        │    base    │
+├──────┬              ├──────┬─────┤
+│ root │              │ name │ ext │
+"  /    home/user/dir / file  .txt "
+└──────┴──────────────┴──────┴─────┘
+(All spaces in the "" line should be ignored. They are purely for formatting.)
+```
+
+On Windows:
+
+```php
+path.parse('C:\\path\\dir\\file.txt');
+// Returns:
+// [
+//   'root' => 'C:\\',
+//   'dir' => 'C:\\path\\dir',
+//   'base' => 'file.txt',
+//   'ext' => '.txt',
+//   'name' => 'file'
+// ]
+```
+
+```
+┌─────────────────────┬────────────┐
+│          dir        │    base    │
+├──────┬              ├──────┬─────┤
+│ root │              │ name │ ext │
+" C:\      path\dir   \ file  .txt "
+└──────┴──────────────┴──────┴─────┘
+(All spaces in the "" line should be ignored. They are purely for formatting.)
 ```
 
 ## Path::pathname($path)
@@ -662,6 +717,11 @@ Path::tmp('foot\\bar\\baz');
 
 ## Path::toNamespacedPath($path)
 ```php
+Path::toNamespacedPath('\\foo\\bar/baz\\asdfquux\\abcd\\xyz');
+// Returns: '\\\\?\\G:\\foo\\bar\\baz\\asdfquux\\abcd\\xyz'
+
+Path::toNamespacedPath('//foo\\bar/baz\\asdfquux\\abcd\\xyz');
+// Returns: '\\\\?\\UNC\\foo\\bar\\baz\\asdfquux\\abcd\\xyz'
 ```
 
 ## Path::UrlToPath($url)

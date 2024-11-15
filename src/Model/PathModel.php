@@ -45,6 +45,7 @@ trait PathModel
   use PathUtils;
 
   /**
+   * Returns information about a file path.
    * 
    * @param string $path  [required]
    * @param int    $flags [optional]
@@ -57,9 +58,10 @@ trait PathModel
   }
 
   /**
+   * Returns tmp, To make a tmp name with dirname of given path
    * 
    * @param string $path [required]
-   * @return string
+   * @return string tmp string attached with dirname.
    */
   public static function tmp(string $path) : string
   {
@@ -69,9 +71,10 @@ trait PathModel
   }
 
   /**
+   * Returns an object from a path string - the opposite of format().
    * 
    * @param string $path [required]
-   * @return string[]
+   * @return string[] Returns information about a file path.
    */
   public static function parse(string $path) : array
   {
@@ -85,9 +88,12 @@ trait PathModel
   }
 
   /**
+   * Check a valid path length and report exception.
    * 
    * @param string $path [required]
    * 
+   * @throws \Path\Path\Exception\RTException
+   * @return void
    */
   public static function checkLength(string $path) : void
   {
@@ -97,9 +103,10 @@ trait PathModel
   }
 
   /**
+   * Returns a filename without extention of given path
    * 
    * @param string $path [required]
-   * @return string
+   * @return string without extension filename
    */
   public static function filename(string $path) : string
   {
@@ -107,9 +114,12 @@ trait PathModel
   }
 
   /**
+   * Determines whether {path} is an absolute path.
+   * An absolute path will always resolve to the same location,
+   * regardless of the working directory.
    * 
    * @param string $path [required]
-   * @return bool
+   * @return bool absolute for true otherwise false return
    */
   public static function isAbsolute(string $path) : bool
   {
@@ -118,9 +128,11 @@ trait PathModel
   }
 
   /**
-   *
+   * isLocal function checks whether the provided path is local or not.
+   * It determines if the given path refers to a local file or directory.
+   * 
    * @param string $path [required]
-   * @return bool True if the path is local, false otherwise.
+   * @return bool  Returns true if the path is local, false otherwise.
    */
   public static function isLocal(string $path) : bool
   {
@@ -129,6 +141,12 @@ trait PathModel
   }
 
   /**
+   * optimize - method working As Path::format() but this method in common different,
+   * This method will be convert backward slashes to forward slash
+   * 
+   * Normalize a string path, reducing '..' and '.' parts. When multiple slashes are found,
+   * they're replaced by a single one; when the path contains a trailing slash,
+   * it is preserved. On Windows backslashes are used.
    * 
    * @param string $path [required]
    * @return string
@@ -139,20 +157,7 @@ trait PathModel
   }
 
   /**
-   * 
-   * @param callable $method [required]
-   * @param string[] $args   [required]
-   * 
-   * @return string[]
-   */
-  // public static function callMap($method, array $args) : array
-  // {
-  //   return \array_map(static function() use ($method, $args) {
-  //     return self::apply($method, ...\func_get_args());
-  //   }, [$args]);
-  // }
-
-  /**
+   * Short hand apply custom methods of Path, with array Arguments. 
    * 
    * @param callable $method [required]
    * @param string[] $args   [required]
@@ -164,9 +169,12 @@ trait PathModel
   }
 
   /**
+   * canonicalize function converts a given path into its canonical (absolute and standardized) form.
+   * It resolves relative paths, symbolic links, and eliminates redundant or unnecessary components
+   * like '.' and '..' to return a clean and absolute version of the path.
    * 
    * @param string $path [required]
-   * @return string|false
+   * @return string|false Returns the canonical (absolute) path.
    */
   public static function canonicalize(string $path)
   {
@@ -175,6 +183,7 @@ trait PathModel
   }
 
   /**
+   * Returns extname method a path extension name from given path, Its used to get file ext
    * 
    * @param string $path [required]
    * @return string
@@ -186,9 +195,12 @@ trait PathModel
   }
 
   /**
+   * Normalize a string path, reducing '..' and '.' parts. When multiple slashes are found,
+   * they're replaced by a single one; when the path contains a trailing slash,
+   * it is preserved. On Windows backslashes are used.
    * 
    * @param string $path [required]
-   * @return string
+   * @return string Returns normalized path string.
    */
   public static function normalize(string $path) : string
   {
@@ -196,9 +208,10 @@ trait PathModel
   }
 
   /**
+   * Join all arguments together and normalize the resulting path.
    * 
    * @param string ...$paths [required]
-   * @return string
+   * @return string Returns joined segments path.
    */
   public static function join(string ...$paths) : string
   {
@@ -206,11 +219,14 @@ trait PathModel
   }
 
   /**
+   * hasExt method will check extension exists or not exists of given path and matcher
+   * Extensions, if Given extensions in matched path extension then return true,
+   * Otherwise return false
    * 
    * @param string          $path       [required]
    * @param string|string[] $extensions [required]
    * @param bool            $caseI      [optional] case-insensitive
-   * @return string
+   * @return string Return true if extension exists, Otherwise false
    */
   public static function hasExt(string $path, $extensions, bool $caseI = false) : bool
   {
@@ -228,9 +244,15 @@ trait PathModel
   }
 
   /**
+   * The right-most parameter is considered {to}. Other parameters are considered an array of {from}.
+   * Starting from leftmost {from} parameter, resolves {to} to an absolute path.
+   * If {to} isn't already absolute, {from} arguments are prepended in right to left order, until an
+   * absolute path is found. If after using all {from} paths still no absolute path is found,
+   * the current working directory is used as well. The resulting path is normalized, and trailing
+   * slashes are removed unless the path gets resolved to the root directory.
    * 
    * @param string ...$paths [required]
-   * @return string
+   * @return string Returns all resovled segements path
    */
   public static function resolve(string ...$paths) : string
   {
@@ -238,9 +260,10 @@ trait PathModel
   }
 
   /**
+   * Returns a path string with removed path extension.
    * 
    * @param string $path [required]
-   * @return string
+   * @return string Modified path string with removed extension
    */
   public static function removeExt(string $path) : string
   {
@@ -248,9 +271,10 @@ trait PathModel
   }
 
   /**
+   * Returns canonicalized absolute pathname
    * 
    * @param string $path [required]
-   * @return string|false
+   * @return string|false absolute pathname
    */
   public static function real(string $path)
   {
@@ -267,11 +291,14 @@ trait PathModel
     
   }
 
-   /**
+  /**
+   * Returns a path string with changed initial extension to replaced new extension.
+   * If path extension and givent new extension are same then changeExt
+   * will be not modify and return path with initial extension.
    * 
    * @param string $path   [required]
    * @param string $newExt [required]
-   * @return string
+   * @return string Modified path with changed extension
    */
   public static function changeExt(string $path, $newExt) : string
   {
@@ -283,11 +310,13 @@ trait PathModel
   }
 
   /**
+   * Creates an array by using one array for paths and another for its names
+   * And creates multiple files combined with paths from to file names.
    * 
    * @param array $paths [required]
    * @param array $names [required]
    * 
-   * @return array
+   * @return array Combined and concate with new files.
    */
   public static function combine(array $paths, array $names) : array
   {
@@ -310,7 +339,9 @@ trait PathModel
   }
 
   /**
-   * 
+   * Solve the relative path from {from} to {to} based on the current working directory.
+   * At times we have two absolute paths, and we need to derive the relative path from
+   * one to the other. This is actually the reverse transform of path.resolve.
    * 
    * @param string $from [required]
    * @param string $to   [required]
@@ -357,7 +388,7 @@ trait PathModel
   /**
    * 
    * @param string $url [required]
-   * @return string
+   * @return string Converted URL string to Path format
    */
   public static function UrlToPath(string $url) : string
   {
@@ -365,6 +396,10 @@ trait PathModel
   }
 
   /**
+   * On Windows systems only, returns an equivalent namespace-prefixed path for the given path.
+   * If path is not a string, path will be returned without modifications.
+   * This method is meaningful only on Windows system. On POSIX systems,
+   * the method is non-operational and always returns path without modifications.
    * 
    * @param string $path [required]
    * @return string
@@ -382,9 +417,12 @@ trait PathModel
   }
 
   /**
+   * Returns a path string from an array-object - the opposite of parse().
+   * format method are same work as `phpinfo` method But there install the
+   * extra property `root` property to getting current root [dir] of path
    * 
    * @param array $pathObject [required]
-   * @return string
+   * @return string formated path string
    */
   public static function format(array $pathObject) : string
   {
@@ -395,13 +433,20 @@ trait PathModel
   }
 
   /**
+   * pathToURL - Convert path to url see example line: 422, 425
+   * Returns path to url combination with (eg: path, origin, ?query, ?hash)
+   * 
+   * https://example.com/home/local/foo
+   * https://example.com/home/local/foo?uid=100002374736
+   * https://example.com/home/local/foo#urlHash
+   * https://example.com/home/local/foo?uid=100002374736#urlHash
    * 
    * @param string $path   [required]
    * @param string $origin [required]
    * @param string $query  [optional]
    * @param string $hash   [optional]
    * 
-   * @return string
+   * @return string Converted path string to URL format.
    */
   public static function pathToURL(string $path, string $origin, ?string $query = '', ?string $hash = '') : string
   {
