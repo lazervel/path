@@ -373,6 +373,16 @@ Path::isAbsolute('.');           // Returns: false
 
 ## Path::isLocal($path)
 ```php
+Path::isLocal('C:Users\JohnDoe\Documents\file.txt');  // Returns: 'false'
+Path::isLocal('//home/user/file.txt');                // Returns: 'false'
+Path::isLocal('C:\Program Files\file//file.txt');     // Returns: 'false'
+Path::isLocal('C:/Windows\\System32');                // Returns: 'false'
+Path::isLocal('D:\\Data\report.pdf');                 // Returns: 'false'
+Path::isLocal('C:\Users\JohnDoe\Documents\file.txt'); // Returns: 'true'
+Path::isLocal('D:\Projects\Code\index.html');         // Returns: 'true'
+Path::isLocal('/home/user/documents/report.pdf');     // Returns: 'true'
+Path::isLocal('\\ServerName\SharedFolder\image.png'); // Returns: 'true'
+Path::isLocal('E:\Music\Rock\song.mp3');              // Returns: 'true'
 ```
 
 ## Path::isURIPath($path)
