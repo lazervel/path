@@ -10,6 +10,8 @@ PHP Path Help with handling or manipulating file and directory path.
 <a href="https://packagist.org/packages/filesys/path"><img src="https://img.shields.io/packagist/dt/filesys/path.svg?style=flat-square" alt="Total Downloads"></a>
 <a href="https://github.com/lazervel/path/stargazers"><img src="https://img.shields.io/github/stars/lazervel/path?style=flat-square"/></a>
 <a href="https://github.com/lazervel/path/releases"><img src="https://img.shields.io/github/release/lazervel/path.svg?style=flat-square" alt="Latest Version"></a>
+<a href="https://github.com/lazervel/path/graphs/contributors"><img src="https://img.shields.io/github/contributors/lazervel/path?style=flat-square" alt="Contributors"></a>
+<a href="/"><img src="https://img.shields.io/github/repo-size/lazervel/path?style=flat-square" alt="Repository Size"></a>
 </p>
 
 ## Composer Installation
