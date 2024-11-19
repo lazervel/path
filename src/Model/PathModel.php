@@ -58,7 +58,7 @@ trait PathModel
   }
 
   /**
-   * Returns tmp, To make a tmp name with dirname of given path
+   * Returns tmp name, To make a tmp name with dirname of given path
    * 
    * @param string $path [required]
    * @return string tmp string attached with dirname.
@@ -366,6 +366,7 @@ trait PathModel
   }
 
   /**
+   * Returns trailing name component of path
    * 
    * @param string $path [required]
    * @return string Returns trailing name component of path.
@@ -386,6 +387,7 @@ trait PathModel
   }
 
   /**
+   * To convert url 'https://example.com/home/parent/current/path' to '/home/parent/current/path'
    * 
    * @param string $url [required]
    * @return string Converted URL string to Path format
@@ -434,7 +436,7 @@ trait PathModel
 
   /**
    * pathToURL - Convert path to url see example line: 422, 425
-   * Returns path to url combination with (eg: path, origin, ?query, ?hash)
+   * Returns path to url combination with (e.g., path, origin, ?query, ?hash)
    * 
    * https://example.com/home/local/foo
    * https://example.com/home/local/foo?uid=100002374736
