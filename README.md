@@ -67,9 +67,9 @@ require 'vendor/autoload.php';
 ## Path::basename($path[, $suffix])
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- `$suffix` <font color="blue">string</font>  An optional suffix to remove
-- <font color="blue">Returns:</font> <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- `$suffix` [string](https://www.php.net/manual/en/language.types.string)  An optional suffix to remove
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 The `Path::basename()` method returns the last portion of a path, similar to the Unix basename command. Trailing `directory separators` are ignored.
 
@@ -95,6 +95,10 @@ Path::basename('/home/local/user/example.html', '.html');
 
 ## Path::canonicalize($path)
 
+**Parameters:**
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
+
 canonicalize function converts a given path into its canonical (absolute and standardized) form. It resolves relative paths, symbolic links, and eliminates redundant or unnecessary components
 like '.' and '..' to return a clean and absolute version of the path.
 
@@ -115,9 +119,9 @@ Path::canonicalize('/path/composer.json');
 ## Path::changeExt($path, $newExt)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- `$newExt` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- `$newExt` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Returns a path string with changed initial extension to replaced new extension.<br>
 If path extension and givent new extension are same then changeExt will be not modify and return path with initial extension.
@@ -133,9 +137,9 @@ Path::changeExt('/foo/bar/baz/asdf/vector.gif', 'svg');
 ## Path::combine($paths, $names)
 
 **Parameters:**
-- `$paths` <font color="blue">array</font>
-- `$names` <font color="blue">array</font>
-- Return: <font color="blue">array</font>
+- `$paths` [array](https://www.php.net/manual/en/language.types.array)
+- `$names` [array](https://www.php.net/manual/en/language.types.array)
+- Return: [array](https://www.php.net/manual/en/language.types.array)
 
 Creates an array by using one array for paths and another for its names. And creates multiple files combined with paths from to file names.
 
@@ -174,8 +178,8 @@ Path::combine(['C:\\xampp\\htdocs', '\\path'], ['example.html', 'foot.txt', '.en
 ## Path::checkLength($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">void</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [void](https://www.php.net/manual/en/language.types.void)
 
 Check a valid path length and report exception.
 
@@ -219,10 +223,10 @@ explode(Path::delimiter, getenv('PATH'));
 ## Path::dirname($path[, $suffix, $levels])
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- `$suffix` <font color="blue">string</font>
-- `$levels` <font color="blue">int</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- `$suffix` [string](https://www.php.net/manual/en/language.types.string)
+- `$levels` [int](https://www.php.net/manual/en/language.types.integer)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Get the directory name of a given path with optional suffix removal and level adjustment. This function returns the parent directory's path of the provided file or directory path. It also allows for an optional suffix to be removed from the base name and specifies how many levels up the directory to go.
 
@@ -246,8 +250,8 @@ Path::dirname('/foo/bar/baz/asdf/quux\\abcd\\xyz');
 ## Path::extname($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Returns extname method a path extension name from given path, Its used to get file extention.
 
@@ -274,8 +278,8 @@ Path::extname('C:\\xampp\\htdocs\\example.md');
 ## Path::filename($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Returns a filename without extention of given path.
 
@@ -299,8 +303,8 @@ Path::filename('C:\\path\\dir\\file.txt');
 ## Path::format($pathObject)
 
 **Parameters:**
-- `$pathObject` <font color="blue">array</font>
-- Return: <font color="blue">string</font>
+- `$pathObject` [array](https://www.php.net/manual/en/language.types.array)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Returns a path string from an array-object - the opposite of parse(). format method are same work as `phpinfo` method But there install the extra property `root` property to getting current root [dir] of path
 
@@ -376,8 +380,8 @@ Path::getcwd(); // Returns: C:\\xampp\\htdocs
 ## Path::hasExt($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">bool</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [bool](https://www.php.net/manual/en/language.types.boolean)
 
 hasExt method will check extension exists or not exists of given path and matcher Extensions, if Given extensions in matched path extension then return true, Otherwise return false.
 
@@ -426,8 +430,8 @@ Path::info('C:\\xampp\\htdocs\\path\\Path.php');
 ## Path::isAbsolute($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">bool</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [bool](https://www.php.net/manual/en/language.types.boolean)
 
 Determines whether {path} is an absolute path. An absolute path will always resolve to the same location,regardless of the working directory.
 
@@ -454,8 +458,8 @@ Path::isAbsolute('.');           // Returns: false
 ## Path::isLocal($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">bool</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [bool](https://www.php.net/manual/en/language.types.boolean)
 
 isLocal function checks whether the provided path is local or not. It determines if the given path refers to a local file or directory.
 
@@ -475,8 +479,8 @@ Path::isLocal('E:\Music\Rock\song.mp3');              // Returns: 'true'
 ## Path::isURIPath($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">bool</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [bool](https://www.php.net/manual/en/language.types.boolean)
 
 Check if the given path is a valid network path. A valid network path starts with two backslashes `\\` or `//` followed by the server name, and can include subdirectories.
 
@@ -495,8 +499,8 @@ Path::isURIPath('C:/xampp/htdocs/');   // Returns: false
 ## Path::join([...$paths])
 
 **Parameters:**
-- `...$paths` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `...$paths` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Join all arguments together and normalize the resulting path.
 
@@ -516,8 +520,8 @@ Path::join('foo', [], 'bar');
 ## Path::normalize($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Normalize a string path, reducing `..` and `.` parts. When multiple slashes are found, they're replaced by a single one; when the path contains a trailing slash, it is preserved. On Windows backslashes are used.
 
@@ -549,8 +553,8 @@ Path::win32::normalize('C:////temp\\\\/\\/\\/foo/bar');
 ## Path::parse($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">array</font>&lt;<font color="blue">string</font>,<font color="blue">string</font>&gt;
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [array](https://www.php.net/manual/en/language.types.array)&lt;[string](https://www.php.net/manual/en/language.types.string),[string](https://www.php.net/manual/en/language.types.string)&gt;
 
 Returns an object from a path string - the opposite of `format()`.
 
@@ -605,8 +609,8 @@ path.parse('C:\\path\\dir\\file.txt');
 ## Path::pathname($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Get the path name of a given file or directory. This function returns the path name without any suffix or modification and without drive.
 
@@ -660,11 +664,11 @@ Since Windows recognizes multiple path separators, both separators will be repla
 ## Path::pathToURL($path, $origin[, ?$query, ?$hash])
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- `$origin` <font color="blue">string</font>
-- `$query` <font color="blue">string</font>
-- `$hash` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- `$origin` [string](https://www.php.net/manual/en/language.types.string)
+- `$query` [string](https://www.php.net/manual/en/language.types.string)
+- `$hash` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 pathToURL - Convert path to url, Returns path to url combination with `(e.g., path, origin, ?query, ?hash)`.
 
@@ -711,9 +715,9 @@ The API is accessible via `Path\Path::posix` or `Path\Linux\Linux::class`.
 ## Path::relative($from, $to)
 
 **Parameters:**
-- `$from` <font color="blue">string</font>
-- `$to` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$from` [string](https://www.php.net/manual/en/language.types.string)
+- `$to` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Solve the relative path from `from` to `to` based on the current working directory. At times we have two absolute paths, and we need to derive the relative path from one to the other. This is actually the reverse transform of path.resolve.
 
@@ -734,8 +738,8 @@ Path::relative('C:\\orandea\\test\\aaa', 'C:\\orandea\\impl\\bbb');
 ## Path::removeExt($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Returns a path string with removed path extension.
 
@@ -759,8 +763,8 @@ Path::removeExt('G:/path/.github');
 ## Path::resolve(...$path)
 
 **Parameters:**
-- `...$paths` <font color="blue">string</font> A sequence of path segments.
-- Return: <font color="blue">string</font>
+- `...$paths` [string](https://www.php.net/manual/en/language.types.string) A sequence of path segments.
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 The right-most parameter is considered `to`. Other parameters are considered an array of `from`. Starting from leftmost `from` parameter, resolves `to` to an absolute path. If `to` isn't already absolute, `from` arguments are prepended in right to left order, until an absolute path is found. If after using all `from` paths still no absolute path is found, the current working directory is used as well. The resulting path is normalized, and trailing slashes are removed unless the path gets resolved to the root directory.
 
@@ -795,8 +799,8 @@ Path::resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
 ## Path::rootname($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Retrieves the root name of the path. This method extracts the root component of a given path, which can be useful for determining the base directory or starting point for further path manipulations.
 
@@ -859,8 +863,8 @@ On Windows, both the forward slash (`/`) and backward slash (`\`) are accepted a
 ## Path::tmp($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 Returns tmp name, To make a tmp name with dirname of given path.
 
@@ -887,8 +891,8 @@ Path::tmp('foot\\bar\\baz');
 ## Path::toNamespacedPath($path)
 
 **Parameters:**
-- `$path` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$path` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 On `Windows` systems only, returns an equivalent namespace-prefixed path for the given path. If path is not a string, path will be returned without modifications. This method is meaningful only on Windows system. On `POSIX` systems, the method is non-operational and always returns path without modifications.
 
@@ -903,8 +907,8 @@ Path::toNamespacedPath('//foo\\bar/baz\\asdfquux\\abcd\\xyz');
 ## Path::UrlToPath($url)
 
 **Parameters:**
-- `$url` <font color="blue">string</font>
-- Return: <font color="blue">string</font>
+- `$url` [string](https://www.php.net/manual/en/language.types.string)
+- Return: [string](https://www.php.net/manual/en/language.types.string)
 
 To convert url `https://example.com/home/parent/current/path` to `/home/parent/current/path`.
 
