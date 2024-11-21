@@ -1,4 +1,4 @@
-# PHP Path
+# PHP Path ![verified](https://raw.githubusercontent.com/lazervel/assets/main/icons/verified.png)
 
 PHP Path Help with handling or manipulating file and directory path.
 
