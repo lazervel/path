@@ -5,7 +5,7 @@ PHP Path Help with handling or manipulating file and directory path.
 ![Banner](https://raw.githubusercontent.com/lazervel/assets/main/banners/path.png)
 
 <p align="center">
-<a href="https://github.com/shahzadamodassir"><img src="https://img.shields.io/badge/Author-Shahzada%20Modassir-%2344cc11?style=flat-square"/></a>
+<a href="https://github.com/indianmodassir"><img src="https://img.shields.io/badge/Author-Indian%20Modassir-%2344cc11?style=flat-square"/></a>
 <a href="LICENSE"><img src="https://img.shields.io/github/license/lazervel/path?style=flat-square"/></a>
 <a href="https://packagist.org/packages/filesys/path"><img src="https://img.shields.io/packagist/dt/filesys/path.svg?style=flat-square" alt="Total Downloads"></a>
 <a href="https://github.com/lazervel/path/stargazers"><img src="https://img.shields.io/github/stars/lazervel/path?style=flat-square"/></a>
