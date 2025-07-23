@@ -1,5 +1,5 @@
 {
-  "name": "filesys/path",
+  "name": "lazervel/path",
   "description": "Help with handling or manipulating file and directory path.",
   "type": "library",
   "keywords": ["path", "filesys", "fs", "filesystem"],
@@ -16,23 +16,15 @@
   },
   "authors": [
     {
-      "name": "Shahzada Modassir",
-      "email": "shahzadamodassir@gmail.com",
-      "homepage": "https://github.com/shahzadamodassir"
+      "name": "Indian Modassir",
+      "email": "indianmodassir@gmail.com",
+      "homepage": "https://github.com/indianmodassir"
     }
   ],
   "funding": [
     {
       "type": "Github",
-      "url": "https://github.com/shahzadamodassir"
-    },
-    {
-      "type": "Patreon",
-      "url": "https://patreon.com/shahzadamodassir"
-    },
-    {
-      "type": "Opencollective",
-      "url": "https://opencollective.com/shahzadamodassir"
+      "url": "https://github.com/indianmodassir"
     }
   ],
   "minimum-stability": "stable"
