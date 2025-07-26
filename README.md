@@ -24,6 +24,11 @@ composer require lazervel/path
 
 or add it by hand to your `composer.json` file.
 
+```php
+use Path\Path;
+require 'vendor/autoload.php';
+```
+
 ## The Features of PHP Path
 - [Path::basename($path[, $suffix])](#pathbasenamepath-suffix)
 - [Path::canonicalize($path)](#pathcanonicalizepath)
@@ -58,11 +63,6 @@ or add it by hand to your `composer.json` file.
 - [Path::toNamespacedPath($path)](#pathtonamespacedpathpath)
 - [Path::UrlToPath($url)](#pathurltopathurl)
 - [Path::win32](#pathwin32)
-
-```php
-use Path\Path;
-require 'vendor/autoload.php';
-```
 
 ## Path::basename($path[, $suffix])
 
@@ -419,7 +419,7 @@ On Windows:
 ```php
 Path::info('C:\\xampp\\htdocs\\path\\Path.php');
 // Returns: stdClass Object (
-//   [dirname] => C:/xampp/htdocs/path
+//   [dirname] => C:\xampp\htdocs\path
 //   [basename] => Path.php
 //   [extension] => php
 //   [filename] => Path
@@ -547,7 +547,23 @@ Path::win32::normalize('C:////temp\\\\/\\/\\/foo/bar');
 ```
 
 ## Path::optimize($path)
+
+Optimize method working As Path::format() but this method in common different, This method will be convert backward slashes to forward slash and convert forward slash to backward slash depend on `window` and `posix`
+
+Optimize reducing '..' and '.' parts. When multiple slashes are found, they're replaced by a single one; when the path contains a trailing slash, it is preserved. On Windows backslashes are used.
+
+For example, on POSIX:
+
 ```php
+Path::optimize('C:////temp\\\\/\\/\\/foo/bar');
+// Returns: C:/temp/foo/bar
+```
+
+On Windows:
+
+```php
+Path::optimize('C:////temp\\\\/\\/\\/foo/bar');
+// Returns: C:\\temp\\foo\\bar
 ```
 
 ## Path::parse($path)
@@ -916,26 +932,26 @@ For example, on POSIX:
 
 ```php
 Path::UrlToPath('https://www.example.com/server/auth/client?id=1');
-// Returns: 'G:\\server\\auth\\client'
+// Returns: '/server/auth/client'
 
 Path::UrlToPath('https://www.example.com/server/auth/client');
-// Returns: 'G:\\server\\auth\\client'
+// Returns: '/server/auth/client'
 
 Path::UrlToPath('https://www.example.com/server/auth/client?id=1#root');
-// Returns: 'G:\\server\\auth\\client'
+// Returns: '/server/auth/client'
 ```
 
 On Windows:
 
 ```php
 Path::UrlToPath('https://www.example.com/server/auth/client?id=1');
-// Returns: '/server/auth/client'
+// Returns: 'G:\\server\\auth\\client'
 
 Path::UrlToPath('https://www.example.com/server/auth/client');
-// Returns: '/server/auth/client'
+// Returns: 'G:\\server\\auth\\client'
 
 Path::UrlToPath('https://www.example.com/server/auth/client?id=1#root');
-// Returns: '/server/auth/client'
+// Returns: 'G:\\server\\auth\\client'
 ```
 
 ## Path::win32

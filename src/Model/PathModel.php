@@ -25,7 +25,7 @@ namespace Path\Model;
 use Path\Exception\RTException;
 use Path\Utils\PathUtils;
 use Path\Win32\Win32;
-use Url\Url;
+use Lazervel\Url\Url;
 
 /**
  * @uses PathUtils
