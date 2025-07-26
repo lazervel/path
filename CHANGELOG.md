@@ -1,6 +1,9 @@
 # Release Notes
 ## [Unreleased](https://github.com/lazervel/path/compare/v1.0.0...v1.0.0)
 
+## [v1.0.1](https://github.com/lazervel/path/compare/v1.0.0...v1.0.1) - 26 July 2025
+- Fixed bugs `Url` dependencies not working peoperly throwing error Class namespace [@indianmodassir](https://github.com/indianmodassir)
+
 ## [v1.0.0](https://github.com/lazervel/path/compare/v1.0.0...v1.0.0) - 15 November 2024
 ### What's Changed
 - Merge pull request #1 from lazervel/main by @shahzadiafsu in https://github.com/lazervel/path/pull/3
