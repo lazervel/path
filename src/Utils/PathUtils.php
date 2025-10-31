@@ -20,9 +20,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Path\Utils;
+namespace Lazervel\Path\Utils;
 
-use Path\Exception\RTException;
+use Lazervel\Path\Exception\RTException;
 
 /**
  * PathUtils Trait

@@ -20,9 +20,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Path\Linux;
+namespace Lazervel\Path\Linux;
 
-use Path\Model\PathModel;
+use Lazervel\Path\Model\PathModel;
 
 /**
  * POSIX-specific method for handling tasks.

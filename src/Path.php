@@ -20,11 +20,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Path;
+namespace Lazervel\Path;
 
-use Path\Model\PathModel;
-use Path\Win32\Win32;
-use Path\Linux\Linux;
+use Lazervel\Path\Model\PathModel;
+use Lazervel\Path\Win32\Win32;
+use Lazervel\Path\Linux\Linux;
 
 /**
  * Platform-independent method that performs tasks based on the detected operating system.

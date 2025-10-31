@@ -20,11 +20,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Path\Model;
+namespace Lazervel\Path\Model;
 
-use Path\Exception\RTException;
-use Path\Utils\PathUtils;
-use Path\Win32\Win32;
+use Lazervel\Path\Exception\RTException;
+use Lazervel\Path\Utils\PathUtils;
+use Lazervel\Path\Win32\Win32;
 use Lazervel\Url\Url;
 
 /**

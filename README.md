@@ -25,7 +25,7 @@ composer require lazervel/path
 or add it by hand to your `composer.json` file.
 
 ```php
-use Path\Path;
+use Lazervel\Path\Path;
 require 'vendor/autoload.php';
 ```
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Path\Exception;
+namespace Lazervel\Path\Exception;
 
 class RuntimeException extends \RuntimeException implements ExceptionInterface
 {

@@ -20,9 +20,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Path\Win32;
+namespace Lazervel\Path\Win32;
 
-use Path\Model\PathModel;
+use Lazervel\Path\Model\PathModel;
 
 /**
  * Windows-specific method for handling tasks.

@@ -1,3 +1,0 @@
-composer dump_autoload
-composer install
-composer update
