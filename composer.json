@@ -12,7 +12,7 @@
   },
   "require": {
     "php": "^7.2 || ^8.0",
-    "lazervel/url": "*"
+    "lazervel/url": ">=1.0"
   },
   "authors": [
     {
@@ -27,6 +27,13 @@
       "url": "https://github.com/indianmodassir"
     }
   ],
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "php-http/discovery": false
+    }
+  },
   "minimum-stability": "stable",
   "prefer-stable": true
 }
